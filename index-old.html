@@ -1,0 +1,114 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Tunebook :: Baton Rouge Fiddle Jam</title>
+  <meta name="description" content="Tunebook">
+  <meta name="author" content="Stephen Hebert">
+
+  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+  <div id="navmenu">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+  </div>
+  <div id="main" class="m-0 p-0">
+    <div class="bg-light p-0 m-0">
+      <a class="fas fa-bars" href="javascript://" onclick="openNav()"></a>
+      <!-- <span class="navbar-brand text-align-left">Tunebook :: Baton Rouge Fiddle Jam</a> -->
+      <span class="navbar-text">Tunebook :: Baton Rouge Fiddle Jam</span>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">test</div>
+      </div>
+    </div>
+  </div>
+
+	<section class="bg-primary">
+	  <div class="container">
+
+
+	<!--  START NAVBAR   -->
+		<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark navbar-offcanvas">
+		  <a class="navbar-brand mr-auto" href="#">Offcanvas navbar - toggle always visible</a>
+		  
+	<!--     If you want to show the button online on mobile use this toggle   
+		  
+		  <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+	-->
+		  
+	<!--      This toggle button is always visible  -->
+		 <button class="navbar-toggler d-block" type="button" id="navToggle">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+
+		  <div class="navbar-collapse offcanvas-collapse">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item active">
+				<a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#">Notifications</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#">Profile</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#">Switch account</a>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+				<div class="dropdown-menu" aria-labelledby="dropdown01">
+				  <a class="dropdown-item" href="#">Action</a>
+				  <a class="dropdown-item" href="#">Another action</a>
+				  <a class="dropdown-item" href="#">Something else here</a>
+				</div>
+			  </li>
+			</ul>
+	 
+			
+		  </div>
+		</nav>
+	<!--  END NAVBAR   -->
+
+	  </div>
+	  <!--/.container    -->
+
+	</section>
+
+
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/DynamicTableClass-2.3.js"></script>
+  <script>
+  /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+    function openNav() {
+      document.getElementById("navmenu").style.width = "250px";
+      document.getElementById("main").style.marginLeft = "250px !important";
+    }
+
+    /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+    function closeNav() {
+      document.getElementById("navmenu").style.width = "0";
+      document.getElementById("main").style.marginLeft = "0 !important";
+    }
+  
+  </script>
+  <!-- <script src="js/scripts.js"></script> -->
+</body>
+</html>
