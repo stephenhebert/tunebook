@@ -1,12 +1,47 @@
-html {
-  background: url(/assets/images/projects/taggle/bg.png) repeat; }
+*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+*{padding:0;margin:0}
+/* html{font-family:Roboto-Thin,Roboto,sans-serif;color:#8a8a8a;font-weight:200} */
+/* h1,h2,h3,h4,h5,h6{font-weight:700;line-height:1.5}
+h1,.h1{font-size:4em;margin:.3em 0;line-height:1}
+h1.mast,.h1.mast{font-size:7em}
+h2,.h2{font-size:3.2em}
+h3,.h3{font-size:2.3em}
+h4,.h4{font-size:2em}
+h5,.h5{font-size:1.6em}
+h6,.h6{font-size:1.2em} */
+a,a:visited{color:#ffa228;text-decoration:none}
+/* ul,ol{font-size:1em;line-height:1em;margin:0} */
+p{line-height:180%;font-size:1.6em}
+p a,p a:hover{-webkit-transition:.5s all;-moz-transition:.5s all;-o-transition:.5s all;transition:.5s all}
+p a:hover{background:#ffa228;color:#fff}
+strong{font-weight:700}
+blockquote{margin-left:2em;border-left:4px solid #8a8a8a;padding-left:10px}
+.project_container{top:10px;position:absolute;left:0}
+.project_container a:hover{text-decoration:underline}
+.text_center{text-align:center}
+.clearfix{clear:both;display:block}
+.clearfix:after{content:"";display:block;clear:both}
+header{text-align:center;margin:50px 0 20px}
+pre{line-height:125%}
+p{line-height:140%;margin-bottom:10px;font-size:1.1em}
+code{padding:3px;color:#555;font-size:.8rem}
+.option{margin-bottom:20px}
+.option p{margin-bottom:0;margin-top:10px}
+.option p:first-child{font-weight:700;color:#903}
+.project{max-width:570px;margin:0 auto;padding:0 10px}
+.project header{margin:10px 0 30px}
+section{margin-bottom:50px}
+.block{margin-bottom:30px}
+.twitter_buttons{margin:0 auto 15px}
 
-h1, h2, h3, h4, h5, h6 {
+
+
+/* h1, h2, h3, h4, h5, h6 {
   text-shadow: 1px 1px 1px #fff;
   color: #000;
   font-weight: bold;
   line-height: 1.5;
-  margin: 0; }
+  margin: 0; } */
 
 pre {
   border-radius: 3px;
@@ -92,7 +127,10 @@ p a:hover {
 
 .taggle_list {
   float: left;
-  width: 100%; }
+  width: 100%; 
+  margin-bottom: -8px;
+  margin-left: 10px;
+}
 
 .taggle_input {
   border: none;
@@ -108,7 +146,7 @@ p a:hover {
   margin-bottom: 5px; }
 
 .taggle_list .taggle {
-  margin-right: 8px;
+  margin-right: 5px;
   background: #E2E1DF;
   padding: 5px 10px;
   border-radius: 3px;
@@ -126,14 +164,11 @@ p a:hover {
 .taggle_list .taggle .close {
   font-size: 1.1rem;
   position: absolute;
-  top: 5px;
+  top: 9px;
   right: 3px;
   text-decoration: none;
-  padding-left: 2px;
-  padding-top: 3px;
   line-height: 0.5;
-  color: #ccc;
-  color: rgba(0, 0, 0, 0.2);
+  color: #999;
   padding-bottom: 4px;
   display: none;
   border: 0;
@@ -155,8 +190,8 @@ p a:hover {
 .taggle_placeholder {
   position: absolute;
   color: #CCC;
-  top: 12px;
-  left: 8px;
+  top: 11px;
+  left: 18px;
   transition: opacity, .25s;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -167,7 +202,7 @@ p a:hover {
   padding: 8px;
   padding-left: 0;
   float: left;
-  margin-top: -5px;
+  margin-top: -3px;
   background: none;
   width: 100%;
   max-width: 100%; }
@@ -186,14 +221,21 @@ textarea.input,
   border: 0;
   background: #FDFDFD;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.7);
-  min-height: 60px;
-  padding: 8px;
-  border-radius: 3px;
+  min-height: 46px;
+  padding: 6px;
+  padding-left: 8px;
+  border-radius: 19px;
   color: #555;
   transition: all .25s;
   cursor: text;
   margin-bottom: 10px;
-  position: relative; }
+  position: relative; 
+
+  /* background-image: url('../img/filter.png');
+  background-repeat: no-repeat;
+  background-position: right; */
+
+}
 
 .textarea.input:focus,
 .textarea.input.active,
@@ -328,6 +370,7 @@ textarea.input {
     padding-right: 20px; }
     .custom.textarea .taggle .close {
       display: inline-block;
+      padding-left: 2px;
       right: 3px; }
 
 .custom.delicious {
