@@ -61,7 +61,7 @@ let tunes = [
             M:3/4
             K:C
             (3:2:2a2 g | (3:2:2a2 g (3:2:2e2 ^d e2 | a2 (3:2:2e2 a (3:2:2g2 e | (3age (3:2:1e3 (3edc | 
-            A2- (3:2:2A2 B (3:2:2c2 A | e2 e2 e2 | e2- (3:2:2e2 a (3:2:2g2 e | (3age (3:2:1e3 (3edc | A4 ] 
+            A2- (3:2:2A2 B (3:2:2c2 A | !slide!e2 !slide!e2 !slide!e2 | e2- (3:2:2e2 a (3:2:2g2 e | (3age (3:2:1e3 (3edc | A4 ] 
         `,
         tags: ["cajun","steve's favs"]
     }
