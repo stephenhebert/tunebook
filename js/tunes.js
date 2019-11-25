@@ -51,5 +51,18 @@ let tunes = [
     {
         abc: `X:6467\nT:Cold Frosty Morning\nM:4/4\nL:1/8\nR:reel\nK:Ador\nEDEGA2A2|ABcde2(3DEF|GABAG2D2|GABcd2D2|\nEDEGA2A2|ABcde2ed|cBAc BAGB|A4A4:|\nedega2a2|abag e2ef|gfga gfef|gagfe2e2|\nA2AAc2cc|d2dde2ee|cBAc BAGB|A4A4:|`,
         tags: ['irish', 'bluegrass','reel']
+    },
+    {
+        abc: `
+            X:
+            T:Balfa Waltz
+            L:1/8
+            Q:1/4=120
+            M:3/4
+            K:C
+            (3:2:2a2 g | (3:2:2a2 g (3:2:2e2 ^d e2 | a2 (3:2:2e2 a (3:2:2g2 e | (3age (3:2:1e3 (3edc | 
+            A2- (3:2:2A2 B (3:2:2c2 A | e2 e2 e2 | e2- (3:2:2e2 a (3:2:2g2 e | (3age (3:2:1e3 (3edc | A4 ] 
+        `,
+        tags: ["cajun","steve's favs"]
     }
 ];

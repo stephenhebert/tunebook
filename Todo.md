@@ -23,6 +23,8 @@
   
 ## REFACTOR
 * refactor tunes into custom class 
+    * make it object oriented (tunelist.whatever(), tune.whatever())
+    * process JSON data and load into constructors, turn variations into arrays in tune objects 
 * remove jQuery
   
 ## BUGS
