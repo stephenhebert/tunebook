@@ -7,10 +7,8 @@
 * add icon logo
 
 ## NAV BAR 
-* style filter bar
-* wire up title filter 
-* add tag filter 
-* reveal pattern instead of obscuring
+* [x] add tag filter - it's kind of ugly 
+* [x] reveal pattern instead of obscuring
 
 ## DEFAULT PAGE
 * add logo
