@@ -30,3 +30,15 @@
   
 ## Q
 * js to load custom objects on start? 
+
+## ABC
+* notes
+* variations
+* decorations (before the note, maybe)
+    * ~       Irish roll
+    * M       lowermordent
+    * P       uppermordent
+    * bowings (vAuBvA)
+    * T       trill
+    * u       up-bow
+    * v       down-bow

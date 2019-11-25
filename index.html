@@ -6,276 +6,102 @@
     <meta charset="utf-8">
 
     <title>Tunebook | Baton Rouge Fiddle Jam</title>
-    <!-- <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint"> -->
+    <meta name="description" content="Tunes">
+    <meta name="author" content="Stephen Hebert">
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/abcjs-midi.css">
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="css/taggle.css">
+    <link rel="stylesheet" href="css/style.css">
 
-
-    <style>
-        body {
-            overflow-x: hidden;
-            margin-top: 56px;
-        }
-
-        .main {
-            /* position: relative; */
-            transition-timing-function: ease-in-out;
-            transition-duration: .3s;
-            transition-property: margin-left, visibility;
-        }
-
-        .top-nav {
-            margin-left: inherit;
-        }
-
-        .offcanvas-nav {
-            position: fixed;
-            top: 0;
-            /* Height of navbar */
-            bottom: 0;
-            right: 100%;
-            left: -240px;
-            width: 240px;
-            padding-right: 1rem;
-            padding-left: 1rem;
-            overflow-y: auto;
-            visibility: hidden;
-            background-color: #343a40;
-            transition-timing-function: ease-in-out;
-            transition-duration: .3s;
-            transition-property: left, visibility;
-
-            align-items: start;
-            -moz-background-clip: padding;
-            /* Firefox 3.6 */
-            -webkit-background-clip: padding;
-            /* Safari 4? Chrome 6? */
-            background-clip: padding-box;
-            /* Firefox 4, Safari 5, Opera 10, IE 9 */
-            border-right: 2px solid rgba(0, 0, 0, 0.2);
-        }
-
-
-        .offcanvas-nav.open {
-            left: 0;
-            visibility: visible;
-        }
-
-        .offcanvas-nav.open+.main {
-            margin-left: 240px;
-        }
-
-
-
-        .navbar-nav {
-            -ms-flex-direction: column;
-            flex-direction: column;
-        }
-
-
-        .nav-scroller {
-            position: relative;
-            z-index: 2;
-            height: 2.75rem;
-            overflow-y: hidden;
-        }
-
-        .nav-scroller .nav {
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-wrap: nowrap;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            color: rgba(255, 255, 255, .75);
-            text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .nav-underline .nav-link {
-            padding-top: .75rem;
-            padding-bottom: .75rem;
-            font-size: .875rem;
-            color: #6c757d;
-        }
-
-        .nav-underline .nav-link:hover {
-            color: #007bff;
-        }
-
-        .nav-underline .active {
-            font-weight: 500;
-            color: #343a40;
-        }
-
-
-        #tunelist .nav-link {
-            padding: 0 !important;
-        }
-
-        #tunelist p {
-            margin-bottom: 0;
-        }
-
-        .ui-autocomplete {
-            overflow: auto;
-        }
-
-    </style>
 </head>
 
 <body>
 
-    <section class="">
-        <!-- container -->
-        <div class="container-fluid">
-            <div class="row">
+    <div class="container-fluid">
+        <div class="row">
 
-                <div class="offcanvas-nav navbar navbar-dark">
-                    <div class="navbar-collapse">
-
-                        <ul class="navbar-nav mr-auto">
-                                <div>
-                                    <!-- <form class="form-inline"> -->
-                                        <!-- <input class="form-control mb-1" type="search" placeholder="Search" 
-                                            aria-label="Search"> -->
-                                    <div class="input textarea clearfix search"></div>
-
-
-                                    <!-- </form> -->
-
-                                </div>
-
-                            <div id="tunelist">
-                                <!-- <p>Heading</p>
-                                            <li class="nav-item active">
-                                                <a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">Notifications</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">Profile</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">Switch account</a>
-                                            </li> -->
-                            </div>
-                            <!-- <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </li> -->
-                        </ul>
-
-
-
+            <div class="offcanvas-nav navbar navbar-dark open">
+                <ul class="navbar-nav mr-auto">
+                    <div>
+                        <div class="input textarea clearfix search"></div>
                     </div>
+                    <div id="tunelist"></div>
+                </ul>
+            </div>
 
+            <div class="col main">
+                <nav class="top-nav navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+                    <button class="navbar-toggler d-block" type="button" id="navToggle">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <span class="navbar-brand mr-auto pl-2 h1 mb-0">Tunebook | Baton Rouge Fiddle Jam</span>
+                </nav>
+                <div class="body py-3">
 
-
-
-
-                </div>
-
-
-
-                <div class="col main">
-                    <nav class="top-nav navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-                        <button class="navbar-toggler d-block" type="button" id="navToggle">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <span class="navbar-brand mr-auto pl-2 h1 mb-0">Tunebook | Baton Rouge Fiddle Jam</span>
-                    </nav>
-                    <div class="body py-3">
-
-                        <div class="container-fluid" id="default">
-                            <div class="row">
-                                <div class="col">
-                                    <span>Select a tune from the menu.</span>
-                                </div>
+                    <div class="container-fluid" id="default">
+                        <div class="row">
+                            <div class="col">
+                                <span>Select a tune from the menu.</span>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="container-fluid d-none" id="tune">
+                    <div class="container-fluid d-none" id="tune">
 
-                            <div class="row">
-                                <div class="col">
-                                    <h2 id="title">Tune title</h2>
-                                </div>
+                        <div class="row">
+                            <div class="col">
+                                <h2 id="title">Tune title</h2>
                             </div>
-
-                            <div class="row">
-                                <div class="col-lg-9 col-12 px-1">
-
-                                    <div class="card mb-2" id="midi">
-                                        <h5 class="card-header">Midi</h5>
-                                        <div class="card-body">
-                                        </div>
-                                    </div>
-
-                                    <div class="card mb-2" id="notation">
-                                        <h5 class="card-header">Notation</h5>
-                                        <div class="card-body">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-lg-3 col-12 px-1">
-
-                                    <div class="card mb-2" id="tags">
-                                        <h5 class="card-header">Tags</h5>
-                                        <div class="card-body">
-                                            <span class="badge badge-secondary">Tag 1</span>
-                                            <span class="badge badge-secondary">Tag 2</span>
-                                            <span class="badge badge-secondary">Tag 3</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="card mb-2" id="notes">
-                                        <h5 class="card-header">Notes</h5>
-                                        <div class="card-body">
-                                        </div>
-                                    </div>
-
-                                    <div class="card mb-2" id="resources">
-                                        <h5 class="card-header">Resources</h5>
-                                        <div class="card-body">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
                         </div>
+                        <div class="row">
+                            <div class="col-lg-9 col-12 px-1">
 
+                                <div class="card mb-2" id="midi">
+                                    <h5 class="card-header">Midi</h5>
+                                    <div class="card-body">
+                                    </div>
+                                </div>
 
+                                <div class="card mb-2" id="notation">
+                                    <h5 class="card-header">Notation</h5>
+                                    <div class="card-body">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-3 col-12 px-1">
+
+                                <div class="card mb-2" id="tags">
+                                    <h5 class="card-header">Tags</h5>
+                                    <div class="card-body">
+                                        <span class="badge badge-secondary">Tag 1</span>
+                                        <span class="badge badge-secondary">Tag 2</span>
+                                        <span class="badge badge-secondary">Tag 3</span>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-2" id="notes">
+                                    <h5 class="card-header">Notes</h5>
+                                    <div class="card-body">
+                                    </div>
+                                </div>
+
+                                <div class="card mb-2" id="resources">
+                                    <h5 class="card-header">Resources</h5>
+                                    <div class="card-body">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
-
-    </section>
-    <!-- menu -->
-    <!-- body -->
+    </div>
 
 
     <script src="js/jquery-3.4.1.min.js"></script>
@@ -422,7 +248,7 @@
             tunelistContainer.innerHTML = tunelistHtml;
         }
 
-        function filterTuneList () {
+        function filterTuneList() {
             let filterTags = taggle.getTagValues();
             let filterText = taggle.getInput().value;
 
@@ -431,7 +257,7 @@
             if (lastTag) {
                 let indexOfLastTag = filterText.indexOf(lastTag);
                 if ((indexOfLastTag + lastTag.length) == filterText.length) {
-                    filterText = filterText.substr(0,indexOfLastTag); 
+                    filterText = filterText.substr(0, indexOfLastTag);
                 }
             }
 
@@ -439,10 +265,10 @@
 
             let filteredTunes = tunes
                 .filter(tune => filterTags
-                    .every(tag => tune.tags != null 
+                    .every(tag => tune.tags != null
                         && tune.tags.includes(tag))
-                    && (filterText.length == 0 || 
-                        tune.title.toLowerCase().includes(filterText.toLowerCase()))    
+                    && (filterText.length == 0 ||
+                        tune.title.toLowerCase().includes(filterText.toLowerCase()))
                 );
 
             updateTunelist(filteredTunes);
@@ -526,7 +352,7 @@
                 source: tagList, // See jQuery UI documentaton for options
                 appendTo: container,
                 position: { at: "left bottom", of: container },
-                select: function(event, data) {
+                select: function (event, data) {
                     event.preventDefault();
                     //Add the tag if user clicks
                     if (event.which === 1) {
@@ -548,11 +374,11 @@
                         .classList
                         .toggle('open');
                 });
-            
+
             // bug workaround
-            document.querySelector('.offcanvas-nav')
-                    .classList
-                    .add("open");
+            // document.querySelector('.offcanvas-nav')
+            //         .classList
+            //         .add("open");
 
 
         });
