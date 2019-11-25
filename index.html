@@ -544,7 +544,9 @@
 
             document.querySelector('#navToggle').addEventListener('click',
                 function () {
-                    $('.offcanvas-nav').toggleClass('open')
+                    document.querySelector('.offcanvas-nav')
+                        .classList
+                        .toggle('open');
                 });
             
 
