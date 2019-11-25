@@ -538,9 +538,16 @@
             $(input).on('input', filterTuneList);
             $(input).on('change', filterTuneList);
 
-            $('#navToggle').on('click touchstart', function () {
-                $('.offcanvas-nav').toggleClass('open')
-            });
+            // $('#navToggle').on('click touchstart', function () {
+            //     $('.offcanvas-nav').toggleClass('open')
+            // });
+
+            document.querySelector('#navToggle').addEventListener('click',
+                function () {
+                    $('.offcanvas-nav').toggleClass('open')
+                });
+            
+
 
         });
 
