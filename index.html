@@ -129,7 +129,7 @@
                 <div class="card-header d-flex justify-content-between">
                     <div class="h5">Midi</div>` +
             ((hasChords(tune)) ?
-                `<div class="small">Only backing track <input type="checkbox" onclick="renderMidi(${tune.index},this.checked)"></div>` :
+                `<div class="small"><input class="align-middle" type="checkbox" onclick="renderMidi(${tune.index},this.checked)"> Only backing track</div>` :
                 '') +
             `</div>
                 <div class="card-body" id="midi">
@@ -162,7 +162,7 @@
             <div class="card mb-2" id="card-notes">
                 <h5 class="card-header">Notes</h5>
                 <div class="card-body">
-                    <p>${tune.notes}</p>
+                    <p class="small">${tune.notes}</p>
                 </div>
             </div>` : '';
 
