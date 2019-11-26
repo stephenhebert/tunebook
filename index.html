@@ -126,17 +126,15 @@
 
         let getMidiHtml = (tune) => `
             <div class="card mb-2" id="card-midi">
-                <h5 class="card-header">Midi</h5>
+                <div class="card-header d-flex justify-content-between">
+                    <div class="h5">Midi</div>` + 
+                    ((hasChords(tune)) ?
+                        `<div class="small">Only backing track <input type="checkbox" onclick="renderMidi(${tune.index},this.checked)"></div>` : 
+                        '') +
+                `</div>
                 <div class="card-body" id="midi">
                 </div>
             </div>`;
-
-        let getBackingTrackHtml = (tune) => `
-            <div class="card mb-2" id="card-midi">
-                <h5 class="card-header">Backing Track</h5>
-                <div class="card-body" id="backing_track">
-                </div>
-            </div>`;        
 
         let getNotationHtml = (tune) => `
             <div class="card mb-2" id="card-notation">
@@ -193,7 +191,6 @@
                 <div class="row">
                     <div class="col-lg-9 col-12 px-1">
                         ${getMidiHtml(tune)}
-                        ${getBackingTrackHtml(tune)}
                         ${getNotationHtml(tune)}
                     </div>
                     <div class="col-lg-3 col-12 px-1">
@@ -226,10 +223,30 @@
                     }
                 });
 
-            ABCJS.renderMidi("backing_track", tune.abc,
+
+        }
+
+        function renderMidi (index, onlyBackingTrack) {
+            console.log(index);
+            console.log(onlyBackingTrack);
+
+            let tune = tunes[index];
+            if (tune == null) return;
+
+            ABCJS.midi.stopPlaying();
+
+            const renderedTune = ABCJS.renderAbc(
+                "notation",
+                tune.abc,
+                {
+                    add_classes: true,
+                    responsive: "resize",
+                });
+
+            ABCJS.renderMidi("midi", tune.abc,
                 {
                     // program: 41,
-                    voicesOff: true,
+                    voicesOff: onlyBackingTrack,
                     animate: {
                         listener: noteHighlight.animationCallback.bind(noteHighlight),
                         target: renderedTune[0],
@@ -252,17 +269,17 @@
 
         function hasChords(tune) {
             // get line that abc notation starts on
+            let tuneLines = tune.abc.split('\n');
             i = 0;
             abcIndex = 0;
-            let tuneLines = tune.abc.split('\n');
-            while (tuneLines[i].search(/^[A-Za-z]:/) == 0) { 
-                abcIndex += tuneLines;
+            while (tuneLines[i].search(/^[A-Za-z]:/) == 0) {
+                abcIndex += tuneLines[i].length + 1;
                 i++; 
             }
-            console.log(i);
-            console.log(abcIndex);
             let abcString = tune.abc.substr(abcIndex);
-            console.log(abcString);
+            // <note><accidental><type></bass>
+            let chordRegex = new RegExp(/"[A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?(\([A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?\))?"/);
+            return (abcString.search(chordRegex) != -1);
         }
 
         function updateTunelist(tunes) {
