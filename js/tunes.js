@@ -67,5 +67,20 @@ let tunes = [
         resources: [
             {title: "Backing Track (strum machine)", 
              link: "https://strummachine.com/app/songs/7Gs8Kt2NxjzbnXgqP"}]
+    },
+    {
+        abc: `
+            X:1
+            T: Cooley's Backing Track Test
+            M: 4/4
+            L: 1/8
+            R: reel
+            K: Emin
+            D2|:"Em"||"D"||
+            "Em"||"D"|1"Em":|2"Em"||
+            |:"Em"||"D"||
+            "Em"||"D"|1"Em":|2"Em"|]
+        `,
+        tags: ''
     }
 ];
