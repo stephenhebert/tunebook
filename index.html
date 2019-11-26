@@ -127,11 +127,11 @@
         let getMidiHtml = (tune) => `
             <div class="card mb-2" id="card-midi">
                 <div class="card-header d-flex justify-content-between">
-                    <div class="h5">Midi</div>` + 
-                    ((hasChords(tune)) ?
-                        `<div class="small">Only backing track <input type="checkbox" onclick="renderMidi(${tune.index},this.checked)"></div>` : 
-                        '') +
-                `</div>
+                    <div class="h5">Midi</div>` +
+            ((hasChords(tune)) ?
+                `<div class="small">Only backing track <input type="checkbox" onclick="renderMidi(${tune.index},this.checked)"></div>` :
+                '') +
+            `</div>
                 <div class="card-body" id="midi">
                 </div>
             </div>`;
@@ -166,12 +166,20 @@
                 </div>
             </div>` : '';
 
-        let getResourcesHtml = (tune) => `
+        let getResourcesHtml = (tune) => {
+            if (tune.links == null || typeof(tune.links) != "object") return '';
+            let tuneLinksHtml = '';
+            tune
+                .links
+                .forEach(link => tuneLinksHtml += `<li class="hanging-indent"><a href="${link.url}" target="_blank">${link.title}</a>`);
+            return `
             <div class="card mb-2" id="card-resources">
                 <h5 class="card-header">Resources</h5>
                 <div class="card-body">
+                    <ul class="list-unstyled small">${tuneLinksHtml}</ul>
                 </div>
-            </div>`;
+            </div>`
+        };
 
         function displayTune(index) {
             let tune = tunes[index];
@@ -216,7 +224,7 @@
                     animate: {
                         listener: noteHighlight.animationCallback.bind(noteHighlight),
                         target: renderedTune[0],
-                        qpm: 120
+                        qpm: getTempo(tune)
                     },
                     inlineControls: {
                         loopToggle: true,
@@ -226,7 +234,7 @@
 
         }
 
-        function renderMidi (index, onlyBackingTrack) {
+        function renderMidi(index, onlyBackingTrack) {
             console.log(index);
             console.log(onlyBackingTrack);
 
@@ -245,12 +253,11 @@
 
             ABCJS.renderMidi("midi", tune.abc,
                 {
-                    // program: 41,
                     voicesOff: onlyBackingTrack,
                     animate: {
                         listener: noteHighlight.animationCallback.bind(noteHighlight),
                         target: renderedTune[0],
-                        qpm: 120
+                        qpm: getTempo(tune)
                     },
                     inlineControls: {
                         loopToggle: true,
@@ -274,7 +281,7 @@
             abcIndex = 0;
             while (tuneLines[i].search(/^[A-Za-z]:/) == 0) {
                 abcIndex += tuneLines[i].length + 1;
-                i++; 
+                i++;
             }
             let abcString = tune.abc.substr(abcIndex);
             // <note><accidental><type></bass>
@@ -300,6 +307,16 @@
 
             let tunelistContainer = document.getElementById("tunelist");
             tunelistContainer.innerHTML = tunelistHtml;
+        }
+
+        function getTempo(tune) {
+            let defaultTempo = "120";
+
+            let tempoRegex = new RegExp(/\nQ: *(.*=)?([0-9]+)(?=\n)/);
+            return (
+                tempoRegex.test(tune.abc) ?
+                    tune.abc.match(tempoRegex)[2] :
+                    defaultTempo);
         }
 
         function filterTuneList() {

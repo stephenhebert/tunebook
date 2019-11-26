@@ -108,3 +108,8 @@ body {
 .ui-autocomplete {
     overflow: auto;
 }
+
+.hanging-indent {
+    padding-left: 22px ;
+    text-indent: -22px ;
+  }
