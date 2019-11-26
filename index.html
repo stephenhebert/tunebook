@@ -131,6 +131,13 @@
                 </div>
             </div>`;
 
+        let getBackingTrackHtml = (tune) => `
+            <div class="card mb-2" id="card-midi">
+                <h5 class="card-header">Backing Track</h5>
+                <div class="card-body" id="backing_track">
+                </div>
+            </div>`;        
+
         let getNotationHtml = (tune) => `
             <div class="card mb-2" id="card-notation">
                 <h5 class="card-header">Notation</h5>
@@ -186,6 +193,7 @@
                 <div class="row">
                     <div class="col-lg-9 col-12 px-1">
                         ${getMidiHtml(tune)}
+                        ${getBackingTrackHtml(tune)}
                         ${getNotationHtml(tune)}
                     </div>
                     <div class="col-lg-3 col-12 px-1">
@@ -208,6 +216,20 @@
             ABCJS.renderMidi("midi", tune.abc,
                 {
                     // program: 41,
+                    animate: {
+                        listener: noteHighlight.animationCallback.bind(noteHighlight),
+                        target: renderedTune[0],
+                        qpm: 120
+                    },
+                    inlineControls: {
+                        loopToggle: true,
+                    }
+                });
+
+            ABCJS.renderMidi("backing_track", tune.abc,
+                {
+                    // program: 41,
+                    voicesOff: true,
                     animate: {
                         listener: noteHighlight.animationCallback.bind(noteHighlight),
                         target: renderedTune[0],
