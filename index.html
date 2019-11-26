@@ -250,6 +250,21 @@
                 .toUpperCase();
         }
 
+        function hasChords(tune) {
+            // get line that abc notation starts on
+            i = 0;
+            abcIndex = 0;
+            let tuneLines = tune.abc.split('\n');
+            while (tuneLines[i].search(/^[A-Za-z]:/) == 0) { 
+                abcIndex += tuneLines;
+                i++; 
+            }
+            console.log(i);
+            console.log(abcIndex);
+            let abcString = tune.abc.substr(abcIndex);
+            console.log(abcString);
+        }
+
         function updateTunelist(tunes) {
             let showHeadings = (tunes.length > 2) ? true : false;
             let tunelistHtml = '';
