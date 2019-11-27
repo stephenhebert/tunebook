@@ -205,10 +205,9 @@ Html.prototype.getNotes = function () {
 };
 
 Html.prototype.getLinks = function () {
-    if (this.variation.links == null || typeof (this.variation.links) != "object") return '';
+    if (this.variation.tune.links == null || typeof (this.variation.tune.links) != "object") return '';
     let tuneLinksHtml = '';
-    this.variation
-        .links
+    this.variation.tune.links
         .forEach(link => tuneLinksHtml += `<li class="hanging-indent"><a href="${link.url}" target="_blank">${link.title}</a>`);
     return `
         <div class="card mb-2" id="card-resources">
