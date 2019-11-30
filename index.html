@@ -332,8 +332,6 @@
                 }
             }
 
-            console.log(`filtering with ${filterTags} and "${filterText}"`);
-
             let filteredTunes = tunes
                 .filter(tune => filterTags
                     .every(tag => tune.tags != null
@@ -403,56 +401,56 @@
         // update tunelist 
         updateTunelist(tunes);
 
-        var taggle;
+        // var taggle;
 
-        $(document).ready(function () {
+        // $(document).ready(function () {
 
-            taggle = new Taggle($('.search')[0], {
-                placeholder: "Search...",
-                allowedTags: tagList,
-                saveOnBlur: true,
-                duplicateTagClass: 'bounce',
-                onTagAdd: filterTuneList,
-                onTagRemove: filterTuneList
-            });
+        //     taggle = new Taggle($('.search')[0], {
+        //         placeholder: "Search...",
+        //         allowedTags: tagList,
+        //         saveOnBlur: true,
+        //         duplicateTagClass: 'bounce',
+        //         onTagAdd: filterTuneList,
+        //         onTagRemove: filterTuneList
+        //     });
 
-            var container = taggle.getContainer();
-            var input = taggle.getInput();
+        //     var container = taggle.getContainer();
+        //     var input = taggle.getInput();
 
-            $(input).autocomplete({
-                source: tagList, // See jQuery UI documentaton for options
-                appendTo: container,
-                position: { at: "left bottom", of: container },
-                select: function (event, data) {
-                    event.preventDefault();
-                    //Add the tag if user clicks
-                    if (event.which === 1) {
-                        taggle.add(data.item.value);
-                    }
-                }
-            });
+        //     $(input).autocomplete({
+        //         source: tagList, // See jQuery UI documentaton for options
+        //         appendTo: container,
+        //         position: { at: "left bottom", of: container },
+        //         select: function (event, data) {
+        //             event.preventDefault();
+        //             //Add the tag if user clicks
+        //             if (event.which === 1) {
+        //                 taggle.add(data.item.value);
+        //             }
+        //         }
+        //     });
 
-            $(input).on('input', filterTuneList);
-            $(input).on('change', filterTuneList);
+        //     $(input).on('input', filterTuneList);
+        //     $(input).on('change', filterTuneList);
 
-            // $('#navToggle').on('click touchstart', function () {
-            //     $('.offcanvas-nav').toggleClass('open')
-            // });
+        //     // $('#navToggle').on('click touchstart', function () {
+        //     //     $('.offcanvas-nav').toggleClass('open')
+        //     // });
 
-            document.querySelector('#navToggle').addEventListener('click',
-                function () {
-                    document.querySelector('.offcanvas-nav')
-                        .classList
-                        .toggle('open');
-                });
+        //     document.querySelector('#navToggle').addEventListener('click',
+        //         function () {
+        //             document.querySelector('.offcanvas-nav')
+        //                 .classList
+        //                 .toggle('open');
+        //         });
 
-            // bug workaround
-            // document.querySelector('.offcanvas-nav')
-            //         .classList
-            //         .add("open");
+        //     // bug workaround
+        //     // document.querySelector('.offcanvas-nav')
+        //     //         .classList
+        //     //         .add("open");
 
 
-        });
+        // });
 
 
     </script>
