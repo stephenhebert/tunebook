@@ -17,8 +17,8 @@ body {
 .offcanvas-nav {
     position: fixed;
     top: 0;
-    /* Height of navbar */
     bottom: 0;
+    /* Height of navbar */
     right: 100%;
     left: -240px;
     width: 240px;
