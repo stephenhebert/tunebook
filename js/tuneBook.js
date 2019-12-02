@@ -1,13 +1,24 @@
 function TuneBook(tunes) {
+
+    console.log("benchmark 3a");
+
     this.fieldsToReplace = [
         { field: "title", regex: /\nT: *(.*)(?=\n)/ },
         { field: "notes", regex: /\nN: *(.*)(?=\n)/ }
     ];
+
+    console.log("benchmark 3b");
+
     this.tunes = [];
+    console.log("benchmark 3c");
+
 
     tunes.forEach(tune => {
         this.tunes.push(new Tune(this, tune));
     });
+
+    console.log("benchmark 3d");
+
 
     this.tunes = this.tunes
         .sort((a, b) => {
