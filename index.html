@@ -178,11 +178,25 @@
             }
         };
 
+        console.log("benchmark 1");
+
         let current;
+
+        console.log("benchmark 2");
+
         let tuneBook = new TuneBook(tunes);
+
+        console.log("benchmark 3");
+
         var tagList = [...new Set(tuneBook.tunes.flatMap(tune => tune.tags).sort().filter(tag => tag.length > 0))];
 
+        console.log("benchmark 4");
+
+
         updateTuneMenu(tuneBook.tunes);
+
+        console.log("benchmark 5");
+
 
         // var taggle;
         // $(document).ready(function () {
