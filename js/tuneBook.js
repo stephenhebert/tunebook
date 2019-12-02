@@ -35,8 +35,16 @@ function TuneBook(tunes) {
 }
 
 function Tune(tuneBook, tune) {
+    console.log("benchmark 3c1");
+
     this.tuneBook = tuneBook;
+
+    console.log("benchmark 3c2");
+
     this.variations = [];
+
+    console.log("benchmark 3c3");
+
     switch (typeof (tune.abc)) {
         case "string":
             this.variations.push(new Variation(this, tune.abc));
@@ -45,6 +53,9 @@ function Tune(tuneBook, tune) {
             tune.abc.forEach(variation => this.variations.push(new Variation(this, variation)));
             break;
     }
+
+    console.log("benchmark 3c4");
+
     this.title = this.variations[0].title;
     this.tags = tune.tags;
     this.links = tune.links;
@@ -53,19 +64,41 @@ function Tune(tuneBook, tune) {
 Tune.prototype.getHeading = function () { return this.title.charAt(0).toUpperCase(); }
 
 function Variation(tune, variation) {
+    console.log("benchmark 3c3a");
+
+
     this.tune = tune;
+
+    console.log("benchmark 3c3b");
+
     this.index = this.tune.variations.length;
+
+    console.log("benchmark 3c3c");
+
     this.abc = variation
         .replace(/(?<=\n) +/g, '')
         .trim();
+
+    console.log("benchmark 3c3d");
+
     this.tune.tuneBook.fieldsToReplace.forEach(ftr => {
+    console.log("benchmark 3c3e");
+
         if (ftr.regex.test(this.abc)) {
             this[ftr.field] = this.abc.match(ftr.regex)[1];
+    console.log("benchmark 3c3f");
+
             this.abc = this.abc.replace(ftr.regex, '');
+    console.log("benchmark 3c3g");
+
         }
     });
+    console.log("benchmark 3c3h");
 
     this.html = new Html(this);
+
+    console.log("benchmark 3c3i");
+
 }
 
 Variation.prototype.render = function (onlyBackingTrack) {
@@ -156,7 +189,13 @@ Variation.prototype.display = function () {
 }
 
 function Html(variation) {
+
+    console.log("benchmark 3c3h1");
+
     this.variation = variation;
+
+    console.log("benchmark 3c3h2");
+
 }
 
 Html.prototype.getTitle = function () {
