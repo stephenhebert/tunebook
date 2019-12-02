@@ -17,6 +17,7 @@ message
 refactor
 
     use es6 classes - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+    debug in safari
 
 ----
 
