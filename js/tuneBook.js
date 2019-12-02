@@ -9,14 +9,15 @@ function TuneBook(tunes) {
         this.tunes.push(new Tune(this, tune));
     });
 
-    this.tunes = this.tunes.sort((a, b) => {
-        if (a.title.toUpperCase() < b.title.toUpperCase())
-            return -1;
-        else if (a.title.toUpperCase() > b.title.toUpperCase())
-            return 1;
-        else
-            return 0;
-    });
+    this.tunes = this.tunes
+        .sort((a, b) => {
+            if (a.title.toUpperCase() < b.title.toUpperCase())
+                return -1;
+            else if (a.title.toUpperCase() > b.title.toUpperCase())
+                return 1;
+            else
+                return 0;
+        });
 
     let i = 0;
     this.tunes.forEach(tune => tune.index = i++);

@@ -1,8 +1,8 @@
 html,
 body {
     margin: 0;
-    background-color: #333;
-    color: #eee;
+    /* background-color: #333; */
+    /* color: #eee; */
 }
 
 .title {
@@ -19,12 +19,15 @@ body {
     z-index: 100;
 
     font-size: 2rem;
+
+    color: #eee;
 }
 
 .title .nav-toggle {
     display: inline-block;
     /* width: 1em; */
     /* height: 1.5em; */
+    color: inherit;
     vertical-align: middle;
     font-size: inherit;
     /* border: 1px solid #999; */
@@ -49,7 +52,7 @@ body {
 .main {
     padding-top: 1rem;
     font-size: 2rem;
-    background-color: #eee;
+    /* background-color: #eee; */
     color: #000;
 
     overflow-x: hidden;
@@ -80,7 +83,7 @@ body {
     /* Safari 4? Chrome 6? */
     background-clip: padding-box;
     /* Firefox 4, Safari 5, Opera 10, IE 9 */
-    border-right: 2px solid rgba(0, 0, 0, 0.2);
+    border-right: 5px solid rgba(0, 0, 0, 0.2);
 
     transition-timing-function: ease-in-out;
     transition-duration: .3s;
@@ -90,6 +93,38 @@ body {
 .left-nav.open {
     left: 0;
     visibility: visible;
+}
+
+#tunelist {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* .nav-underline .nav-link {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: .875rem;
+    color: #6c757d;
+} */
+
+#tunelist .nav-link {
+    padding: 0 !important;
+    color: #eee;
+}
+
+#tunelist .nav-link:hover {
+    color: #007bff;
+}
+
+#tunelist p {
+    margin-bottom: 0;
+}
+
+
+.hanging-indent {
+    padding-left: 22px ;
+    text-indent: -22px ;
 }
 
 /* mobile */
