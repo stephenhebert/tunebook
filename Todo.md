@@ -9,6 +9,9 @@
 ## NAV BAR 
 * [x] add tag filter (it's kind of ugly) 
 * [x] reveal pattern instead of obscuring
+* rebuild from scratch 
+* add close button
+
 
 ## DEFAULT PAGE
 * add logo
@@ -20,10 +23,11 @@
 ## MOBILE
   
 ## REFACTOR
-* refactor tunes into custom class 
+* [x] refactor tunes into custom class 
     * make it object oriented (tunelist.whatever(), tune.whatever())
     * process JSON data and load into constructors, turn variations into arrays in tune objects 
 * remove jQuery
+* simplify css
   
 ## BUGS
 * nav menu doesn't work on mobile (refactor jquery?)

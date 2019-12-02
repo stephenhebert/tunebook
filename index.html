@@ -5,40 +5,40 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Tunebook | Baton Rouge Fiddle Jam</title>
-    <meta name="description" content="Tunes">
+    <title>Tunebook - Baton Rouge Fiddle Jam</title>
+    <meta name="description" content="Baton Rouge Fiddle Jam">
     <meta name="author" content="Stephen Hebert">
 
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/abcjs-midi.css">
-    <!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"> -->
     <link rel="stylesheet" type="text/css" href="css/taggle.css">
-    <link rel="stylesheet" href="css/style.css">
+     <style>
+    </style>
 
 </head>
 
 <body>
 
-    <div class="container-fluid">
+    <div class="title d-flex flex-row">
+        <a class="nav-toggle" href="javascript://" onclick="document.querySelector('.left-nav').classList.toggle('open')"><i
+                class="fa fa-bars"></i></a>
+        <h1>Baton Rouge Fiddle Jam</h1>
+
+    </div>
+
+    <div class="wrapper container-fluid">
         <div class="row">
 
-            <div class="offcanvas-nav navbar navbar-dark open">
-                <ul class="navbar-nav mr-auto">
-                    <div>
-                        <div class="input textarea clearfix search"></div>
-                    </div>
-                    <div id="tunelist"></div>
-                </ul>
+            <div class="left-nav">
+                <!-- add close button -->
+                <div class="input textarea clearfix search"></div>
+                <div id="tunelist"></div>
             </div>
 
             <div class="col main">
-                <nav class="top-nav navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-                    <button class="navbar-toggler d-block" type="button" id="navToggle">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <span class="navbar-brand mr-auto pl-2 h1 mb-0">Tunebook | Baton Rouge Fiddle Jam</span>
-                </nav>
+
                 <div class="body py-3">
 
                     <div class="container-fluid" id="default">
@@ -98,362 +98,19 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 
-
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <!-- <script src="js/jquery-ui.min.js"></script> -->
-    <!-- <script src="js/DynamicTableClass-2.3.js"></script> -->
     <script src="js/abcjs_midi_5.10.2-min.js" type="text/javascript"></script>
     <script src="js/taggle.min.js" type="text/javascript"></script>
     <script src="js/tunes.js"></script>
 
-
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
-    <!-- <script src="https://cdn.rawgit.com/JacobLett/bootstrap4-latest/504729ba/bootstrap-4-latest.min.js"></script> -->
-    <script>
-
-        let getTitleHtml = (tune) => `
-            <div class="row">
-                <div class="col">
-                    <h2 id="title">${tune.title}</h2>
-                </div>
-            </div>`;
-
-        let getMidiHtml = (tune) => `
-            <div class="card mb-2" id="card-midi">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="h5">Midi</div>` +
-            ((hasChords(tune)) ?
-                `<div class="small"><input class="align-middle" type="checkbox" onclick="renderMidi(${tune.index},this.checked)"> Only backing track</div>` :
-                '') +
-            `</div>
-                <div class="card-body" id="midi">
-                </div>
-            </div>`;
-
-        let getNotationHtml = (tune) => `
-            <div class="card mb-2" id="card-notation">
-                <h5 class="card-header">Notation</h5>
-                <div class="card-body" id="notation">
-                </div>
-            </div>`;
-
-        let getTagsHtml = (tune) => {
-            if (tune.tags == null || typeof (tune.tags) != "object") return '';
-
-            let tagsHtml = '';
-            tune.tags.forEach(tag => tagsHtml += `<span class="badge badge-secondary">${tag.toLowerCase()}</span> `);
-
-            return `
-            <div class="card mb-2" id="card-tags">
-                <h5 class="card-header">Tags</h5>
-                <div class="card-body">
-                    ${tagsHtml}
-                </div>
-            </div>`;
-        };
-
-        let getNotesHtml = (tune) => (tune.notes != null) ? `
-            <div class="card mb-2" id="card-notes">
-                <h5 class="card-header">Notes</h5>
-                <div class="card-body">
-                    <p class="small">${tune.notes}</p>
-                </div>
-            </div>` : '';
-
-        let getResourcesHtml = (tune) => {
-            if (tune.links == null || typeof(tune.links) != "object") return '';
-            let tuneLinksHtml = '';
-            tune
-                .links
-                .forEach(link => tuneLinksHtml += `<li class="hanging-indent"><a href="${link.url}" target="_blank">${link.title}</a>`);
-            return `
-            <div class="card mb-2" id="card-resources">
-                <h5 class="card-header">Resources</h5>
-                <div class="card-body">
-                    <ul class="list-unstyled small">${tuneLinksHtml}</ul>
-                </div>
-            </div>`
-        };
-
-        function displayTune(index) {
-            let tune = tunes[index];
-            if (tune == null || currentIndex == index) return;
-
-            currentIndex = index;
-            ABCJS.midi.stopPlaying();
-
-            document.getElementById("default").classList.add("d-none");
-            let tuneContainer = document.getElementById("tune")
-
-            tuneContainer.classList.remove("d-none");
-            tuneContainer.innerHTML = '';
-
-            let tuneHtml = `
-                ${getTitleHtml(tune)}
-                <div class="row">
-                    <div class="col-lg-9 col-12 px-1">
-                        ${getMidiHtml(tune)}
-                        ${getNotationHtml(tune)}
-                    </div>
-                    <div class="col-lg-3 col-12 px-1">
-                        ${getTagsHtml(tune)}
-                        ${getNotesHtml(tune)}
-                        ${getResourcesHtml(tune)}
-                    </div>
-                </div>`;
-
-            tuneContainer.innerHTML = tuneHtml;
-
-            const renderedTune = ABCJS.renderAbc(
-                "notation",
-                tune.abc,
-                {
-                    add_classes: true,
-                    responsive: "resize",
-                });
-
-            ABCJS.renderMidi("midi", tune.abc,
-                {
-                    // program: 41,
-                    animate: {
-                        listener: noteHighlight.animationCallback.bind(noteHighlight),
-                        target: renderedTune[0],
-                        qpm: getTempo(tune)
-                    },
-                    inlineControls: {
-                        loopToggle: true,
-                    }
-                });
-
-
-        }
-
-        function renderMidi(index, onlyBackingTrack) {
-            console.log(index);
-            console.log(onlyBackingTrack);
-
-            let tune = tunes[index];
-            if (tune == null) return;
-
-            ABCJS.midi.stopPlaying();
-
-            const renderedTune = ABCJS.renderAbc(
-                "notation",
-                tune.abc,
-                {
-                    add_classes: true,
-                    responsive: "resize",
-                });
-
-            ABCJS.renderMidi("midi", tune.abc,
-                {
-                    voicesOff: onlyBackingTrack,
-                    animate: {
-                        listener: noteHighlight.animationCallback.bind(noteHighlight),
-                        target: renderedTune[0],
-                        qpm: getTempo(tune)
-                    },
-                    inlineControls: {
-                        loopToggle: true,
-                    }
-                });
-
-        }
-
-        // convert this to a class method somehow 
-        function getHeading(tune) {
-            return tune
-                .title
-                .charAt(0)
-                .toUpperCase();
-        }
-
-        function hasChords(tune) {
-            // get line that abc notation starts on
-            let tuneLines = tune.abc.split('\n');
-            i = 0;
-            abcIndex = 0;
-            while (tuneLines[i].search(/^[A-Za-z]:/) == 0) {
-                abcIndex += tuneLines[i].length + 1;
-                i++;
-            }
-            let abcString = tune.abc.substr(abcIndex);
-            // <note><accidental><type></bass>
-            let chordRegex = new RegExp(/"[A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?(\([A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?\))?"/);
-            return (abcString.search(chordRegex) != -1);
-        }
-
-        function updateTunelist(tunes) {
-            let showHeadings = (tunes.length > 2) ? true : false;
-            let tunelistHtml = '';
-
-            let prevHeading = "";
-            tunes.forEach(tune => {
-                if (showHeadings) {
-                    let currHeading = getHeading(tune);
-                    if (currHeading != prevHeading) {
-                        tunelistHtml += `<p>${currHeading}</p>`;
-                        prevHeading = currHeading;
-                    }
-                }
-                tunelistHtml += `<li class="nav-item"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index})">${tune.title}</a></li>`;
-            });
-
-            let tunelistContainer = document.getElementById("tunelist");
-            tunelistContainer.innerHTML = tunelistHtml;
-        }
-
-        function getTempo(tune) {
-            let defaultTempo = "120";
-
-            let tempoRegex = new RegExp(/\nQ: *(.*=)?([0-9]+)(?=\n)/);
-            return (
-                tempoRegex.test(tune.abc) ?
-                    tune.abc.match(tempoRegex)[2] :
-                    defaultTempo);
-        }
-
-        function filterTuneList() {
-            let filterTags = taggle.getTagValues();
-            let filterText = taggle.getInput().value;
-
-            // workaround for weird functionality
-            let lastTag = filterTags.slice(-1).pop();
-            if (lastTag) {
-                let indexOfLastTag = filterText.indexOf(lastTag);
-                if ((indexOfLastTag + lastTag.length) == filterText.length) {
-                    filterText = filterText.substr(0, indexOfLastTag);
-                }
-            }
-
-            let filteredTunes = tunes
-                .filter(tune => filterTags
-                    .every(tag => tune.tags != null
-                        && tune.tags.includes(tag))
-                    && (filterText.length == 0 ||
-                        tune.title.toLowerCase().includes(filterText.toLowerCase()))
-                );
-
-            updateTunelist(filteredTunes);
-        }
-
-        var noteHighlight = {
-            colorRange(range, color) {
-                if (range && range.elements) {
-                    range.elements.forEach(function (set) {
-                        set.forEach(function (item) {
-                            item.setAttribute("fill", color);
-                        });
-                    });
-                }
-            },
-            animationCallback(lastRange, currentRange, context) {
-                this.colorRange(lastRange, "#000000");
-                this.colorRange(currentRange, "#3D9AFC");
-            }
-        };
-
-        let currentIndex = -1;
-
-        const fieldsToReplace = [
-            { field: "title", regex: /\nT: *(.*)(?=\n)/ },
-            { field: "notes", regex: /\nN: *(.*)(?=\n)/ }
-        ];
-
-        tunes.forEach(tune => {
-            tune.abc = tune.abc
-                .replace(/(?<=\n) +/g, '')
-                .trim()
-            fieldsToReplace.forEach(ftr => {
-                if (ftr.regex.test(tune.abc)) {
-                    tune[ftr.field] = tune.abc.match(ftr.regex)[1];
-                    tune.abc = tune.abc.replace(ftr.regex, '');
-                }
-            });
-        });
-
-        tunes = tunes
-            .filter(tune => tune.title != null)
-            .sort((a, b) => {
-                if (a.title.toUpperCase() < b.title.toUpperCase())
-                    return -1;
-                else if (a.title.toUpperCase() > b.title.toUpperCase())
-                    return 1;
-                else
-                    return 0;
-            });
-
-        var tagList = [...new Set(tunes.flatMap(tune => tune.tags).sort().filter(tag => tag.length > 0))];
-
-        // add indexes
-        let index = 0;
-        tunes.forEach(tune => {
-            tune.index = index;
-            index++;
-        })
-
-        // update tunelist 
-        updateTunelist(tunes);
-
-        // var taggle;
-
-        // $(document).ready(function () {
-
-        //     taggle = new Taggle($('.search')[0], {
-        //         placeholder: "Search...",
-        //         allowedTags: tagList,
-        //         saveOnBlur: true,
-        //         duplicateTagClass: 'bounce',
-        //         onTagAdd: filterTuneList,
-        //         onTagRemove: filterTuneList
-        //     });
-
-        //     var container = taggle.getContainer();
-        //     var input = taggle.getInput();
-
-        //     $(input).autocomplete({
-        //         source: tagList, // See jQuery UI documentaton for options
-        //         appendTo: container,
-        //         position: { at: "left bottom", of: container },
-        //         select: function (event, data) {
-        //             event.preventDefault();
-        //             //Add the tag if user clicks
-        //             if (event.which === 1) {
-        //                 taggle.add(data.item.value);
-        //             }
-        //         }
-        //     });
-
-        //     $(input).on('input', filterTuneList);
-        //     $(input).on('change', filterTuneList);
-
-        //     // $('#navToggle').on('click touchstart', function () {
-        //     //     $('.offcanvas-nav').toggleClass('open')
-        //     // });
-
-        //     document.querySelector('#navToggle').addEventListener('click',
-        //         function () {
-        //             document.querySelector('.offcanvas-nav')
-        //                 .classList
-        //                 .toggle('open');
-        //         });
-
-        //     // bug workaround
-        //     // document.querySelector('.offcanvas-nav')
-        //     //         .classList
-        //     //         .add("open");
-
-
-        // });
-
-
-    </script>
 
 </body>
 
