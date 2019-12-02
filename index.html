@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/abcjs-midi.css">
     <link rel="stylesheet" type="text/css" href="css/taggle.css">
-     <style>
+    <style>
     </style>
 
 </head>
@@ -110,7 +110,101 @@
     <script src="js/abcjs_midi_5.10.2-min.js" type="text/javascript"></script>
     <script src="js/taggle.min.js" type="text/javascript"></script>
     <script src="js/tunes.js"></script>
+    <script src="js/tuneBook.js"></script>
 
+    <script>
+        function updateTuneMenu(tunes) {
+            let showHeadings = (tunes.length > 2) ? true : false;
+            let tunelistHtml = '';
+            let prevHeading = "";
+            tunes.forEach(tune => {
+                if (showHeadings) {
+                    let currHeading = tune.getHeading();
+                    if (currHeading != prevHeading) {
+                        tunelistHtml += `<p>${currHeading}</p>`;
+                        prevHeading = currHeading;
+                    }
+                }
+                tunelistHtml += `<li class="nav-item"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index})">${tune.title}</a></li>`;
+            });
+            let tunelistContainer = document.getElementById("tunelist");
+            tunelistContainer.innerHTML = tunelistHtml;
+        }
+        function filterTuneMenu() {
+            let filterTags = taggle.getTagValues();
+            let filterText = taggle.getInput().value;
+            // workaround for weird functionality
+            let lastTag = filterTags.slice(-1).pop();
+            if (lastTag) {
+                let indexOfLastTag = filterText.indexOf(lastTag);
+                if ((indexOfLastTag + lastTag.length) == filterText.length) {
+                    filterText = filterText.substr(0, indexOfLastTag);
+                }
+            }
+            //console.log(`filtering with ${filterTags} and "${filterText}"`);
+            let filteredTunes = tuneBook.tunes
+                .filter(tune => filterTags
+                    .every(tag => tune.tags != null
+                        && tune.tags.includes(tag))
+                    && (filterText.length == 0 ||
+                        tune.title.toLowerCase().includes(filterText.toLowerCase()))
+                );
+            updateTuneMenu(filteredTunes);
+        }
+        function displayTune(tuneIndex, variationIndex) {
+            tuneBook.tunes[tuneIndex].variations[variationIndex || 0].display();
+        }
+        function renderMidi(tuneIndex, variationIndex, onlyBackingTrack) {
+            tuneBook.tunes[tuneIndex].variations[variationIndex || 0].render(onlyBackingTrack || false);
+        }
+        var noteHighlight = {
+            colorRange(range, color) {
+                if (range && range.elements) {
+                    range.elements.forEach(function (set) {
+                        set.forEach(function (item) {
+                            item.setAttribute("fill", color);
+                        });
+                    });
+                }
+            },
+            animationCallback(lastRange, currentRange, context) {
+                this.colorRange(lastRange, "#000000");
+                this.colorRange(currentRange, "#3D9AFC");
+            }
+        };
+        let current;
+        let tuneBook = new TuneBook(tunes);
+        var tagList = [...new Set(tuneBook.tunes.flatMap(tune => tune.tags).sort().filter(tag => tag.length > 0))];
+        updateTuneMenu(tuneBook.tunes);
+        var taggle;
+        $(document).ready(function () {
+            taggle = new Taggle($('.search')[0], {
+                placeholder: "Search...",
+                allowedTags: tagList,
+                saveOnBlur: true,
+                duplicateTagClass: 'bounce',
+                onTagAdd: filterTuneMenu,
+                onTagRemove: filterTuneMenu
+            });
+            var container = taggle.getContainer();
+            var input = taggle.getInput();
+            $(input).autocomplete({
+                source: tagList, // See jQuery UI documentaton for options
+                appendTo: container,
+                position: { at: "left bottom", of: container },
+                select: function (event, data) {
+                    event.preventDefault();
+                    //Add the tag if user clicks
+                    if (event.which === 1) {
+                        taggle.add(data.item.value);
+                    }
+                }
+            });
+            $(input).on('input', filterTuneMenu);
+            $(input).on('change', filterTuneMenu);
+
+        });
+    </script>
 
 </body>
 
