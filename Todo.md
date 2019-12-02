@@ -1,5 +1,22 @@
 # tunebook todo
 
+
+menu
+	add shadow
+	add close button
+	use default bootstrap nav toggle 
+	
+styles
+	add built in
+	
+	
+message
+	last updated date
+	built with abcjs by paul rosen
+
+----
+
+
 ## GENERAL
 * fonts
 
