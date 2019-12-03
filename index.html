@@ -118,14 +118,23 @@
             let showHeadings = (tunes.length > 2) ? true : false;
             let tunelistHtml = '';
             let prevHeading = "";
-            tunes.forEach(tune => {
-                if (showHeadings) {
-                    let currHeading = tune.getHeading();
-                    if (currHeading != prevHeading) {
-                        tunelistHtml += `<p>${currHeading}</p>`;
-                        prevHeading = currHeading;
+            tunes
+                .sort((a, b) => {
+                    if (a.title.toUpperCase() < b.title.toUpperCase())
+                        return -1;
+                    else if (a.title.toUpperCase() > b.title.toUpperCase())
+                        return 1;
+                    else
+                        return 0;
+                })
+                .forEach(tune => {
+                    if (showHeadings) {
+                        let currHeading = tune.getHeading();
+                        if (currHeading != prevHeading) {
+                            tunelistHtml += `<p>${currHeading}</p>`;
+                            prevHeading = currHeading;
+                        }
                     }
-                }
                 tunelistHtml += `<li class="nav-item"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index})">${tune.title}</a></li>`;
             });
             let tunelistContainer = document.getElementById("tunelist");
@@ -155,11 +164,38 @@
         }
 
         function displayTune(tuneIndex, variationIndex) {
-            tuneBook.tunes[tuneIndex].variations[variationIndex || 0].display();
+            // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].display();
+            let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
+            if (tune) tune.variations[variationIndex || 0].display();
+            window.history.pushState("","",
+                `?t=${tuneIndex}` + 
+                    ((variationIndex) ? `&v=${variationIndex}`: "")
+                );
         }
 
         function renderMidi(tuneIndex, variationIndex, onlyBackingTrack) {
-            tuneBook.tunes[tuneIndex].variations[variationIndex || 0].render(onlyBackingTrack || false);
+            // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].render(onlyBackingTrack || false);
+            let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
+            if (tune) tune.variations[variationIndex || 0].render(onlyBackingTrack || false);
+            window.history.pushState("","",
+                `?t=${tuneIndex}` +
+                    ((variationIndex) ? `&v=${variationIndex}` : "") + 
+                    ((onlyBackingTrack) ? `&onlyBackingTrack=${onlyBackingTrack}`: "")
+                );
+            if (onlyBackingTrack) document.querySelector('#card-midi input[type=checkbox]').checked = true;
+        }
+
+        function getQueryArgs() {
+            let query = window.location.search.substring(1);
+            let args = [];
+            let pairs = query.split('&');
+            pairs.forEach(pair => {
+                if (pair.length > 0) {
+                    let vars = pair.split("=");
+                    args[decodeURIComponent(vars[0])] = decodeURIComponent(vars[1]); 
+                }
+            });
+            return args;
         }
 
         var noteHighlight = {
@@ -178,25 +214,22 @@
             }
         };
 
-        console.log("benchmark 1");
-
         let current;
-
-        console.log("benchmark 2");
 
         let tuneBook = new TuneBook(tunes);
 
-        console.log("benchmark 3");
-
         var tagList = [...new Set(tuneBook.tunes.flatMap(tune => tune.tags).sort().filter(tag => tag.length > 0))];
-
-        console.log("benchmark 4");
-
 
         updateTuneMenu(tuneBook.tunes);
 
-        console.log("benchmark 5");
+        // check querystring for current tune
+        let queryArgs = getQueryArgs();
+        let tuneIndex = queryArgs['t'];
+        let variationIndex = queryArgs['v'];
+        let onlyBackingTrack = queryArgs['onlyBackingTrack'] ? true : false;
 
+        if (tuneIndex) displayTune(tuneIndex,variationIndex);
+        if (onlyBackingTrack) renderMidi(tuneIndex,variationIndex, onlyBackingTrack);
 
         // var taggle;
         // $(document).ready(function () {

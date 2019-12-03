@@ -1,49 +1,35 @@
 function TuneBook(tunes) {
 
-    console.log("benchmark 3a");
-
     this.fieldsToReplace = [
         { field: "title", regex: /\nT: *(.*)(?=\n)/ },
         { field: "notes", regex: /\nN: *(.*)(?=\n)/ }
     ];
 
-    console.log("benchmark 3b");
-
     this.tunes = [];
-    console.log("benchmark 3c");
-
 
     tunes.forEach(tune => {
         this.tunes.push(new Tune(this, tune));
     });
 
-    console.log("benchmark 3d");
+    // this.tunes = this.tunes
+    //     .sort((a, b) => {
+    //         if (a.title.toUpperCase() < b.title.toUpperCase())
+    //             return -1;
+    //         else if (a.title.toUpperCase() > b.title.toUpperCase())
+    //             return 1;
+    //         else
+    //             return 0;
+    //     });
 
-
-    this.tunes = this.tunes
-        .sort((a, b) => {
-            if (a.title.toUpperCase() < b.title.toUpperCase())
-                return -1;
-            else if (a.title.toUpperCase() > b.title.toUpperCase())
-                return 1;
-            else
-                return 0;
-        });
-
-    let i = 0;
-    this.tunes.forEach(tune => tune.index = i++);
+    // let i = 0;
+    // this.tunes.forEach(tune => tune.index = i++);
 }
 
 function Tune(tuneBook, tune) {
-    console.log("benchmark 3c1");
-
     this.tuneBook = tuneBook;
-
-    console.log("benchmark 3c2");
+    this.index = this.tuneBook.tunes.length;
 
     this.variations = [];
-
-    console.log("benchmark 3c3");
 
     switch (typeof (tune.abc)) {
         case "string":
@@ -54,8 +40,6 @@ function Tune(tuneBook, tune) {
             break;
     }
 
-    console.log("benchmark 3c4");
-
     this.title = this.variations[0].title;
     this.tags = tune.tags;
     this.links = tune.links;
@@ -64,41 +48,20 @@ function Tune(tuneBook, tune) {
 Tune.prototype.getHeading = function () { return this.title.charAt(0).toUpperCase(); }
 
 function Variation(tune, variation) {
-    console.log("benchmark 3c3a");
-
-
     this.tune = tune;
-
-    console.log("benchmark 3c3b");
-
     this.index = this.tune.variations.length;
-
-    console.log("benchmark 3c3c");
 
     this.abc = variation
         .replace(/(?<=\n) +/g, '')
         .trim();
 
-    console.log("benchmark 3c3d");
-
     this.tune.tuneBook.fieldsToReplace.forEach(ftr => {
-    console.log("benchmark 3c3e");
-
         if (ftr.regex.test(this.abc)) {
             this[ftr.field] = this.abc.match(ftr.regex)[1];
-    console.log("benchmark 3c3f");
-
             this.abc = this.abc.replace(ftr.regex, '');
-    console.log("benchmark 3c3g");
-
         }
     });
-    console.log("benchmark 3c3h");
-
     this.html = new Html(this);
-
-    console.log("benchmark 3c3i");
-
 }
 
 Variation.prototype.render = function (onlyBackingTrack) {
@@ -189,13 +152,7 @@ Variation.prototype.display = function () {
 }
 
 function Html(variation) {
-
-    console.log("benchmark 3c3h1");
-
     this.variation = variation;
-
-    console.log("benchmark 3c3h2");
-
 }
 
 Html.prototype.getTitle = function () {
@@ -234,7 +191,7 @@ Html.prototype.getTags = function () {
     if (this.variation.tune.tags == null || typeof (this.variation.tune.tags) != "object") return '';
 
     let tagsHtml = '';
-    this.variation.tune.tags.forEach(tag => tagsHtml += `<span class="badge badge-secondary">${tag.toLowerCase()}</span> `);
+    this.variation.tune.tags.sort().forEach(tag => tagsHtml += `<span class="badge badge-secondary">${tag.toLowerCase()}</span> `);
 
     return `
         <div class="card mb-2" id="card-tags">

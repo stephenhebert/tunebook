@@ -52,5 +52,46 @@ let tunes = [
                 title: "Valse de Balfa - Cajun Roosters (Spotify)",
                 url: "https://open.spotify.com/track/5m2OpNfZexMtJX3TtEW7oN?si=fwUtayH7QVSUM8PiJaoQ-w"
             }]
+    }, 
+    {
+        abc: `
+            X:45
+            T:Squirrel Hunters
+            O:england
+            M:4/4
+            L:1/8
+            S:John Hartford's "Wild Hog in the Redbrush" transcribed by Llarry Brandon
+            K:D
+            Q:1/2=110
+            |:"Em"e3d .B2 Bd|efed .B2 BA|"G"GABc d2 dc|dBcA "D" BcBA|
+            "Em"e3d .B2 Bd|efed .B2 BA|"G" GABc d2 B2|1"D" A8:|2"D" A6|
+            |:Bd|"A"edeg a2ag|edef g2BA|"G"GABc d2dc|dBcA "D"BcBA|
+            "A"edeg abag|edef g2BA|"G"GABc d2B2|1"D"A6:|2"D"A8||
+        `,
+        tags: ["steve's favs"],
+        links: [
+            {
+                title: "John Hartford - Kentucky Tunes - The Squirrel Hunters (YouTube)",
+                url: "https://www.youtube.com/watch?v=gV98pfwsM3k"
+            },
+            {
+                title: "Squirrel Hunter - Adam Steffey (YouTube)",
+                url: "https://open.spotify.com/track/6r4WfrTMfl1etEcxbNy3Is?si=SWHcDxNpSsSduHhbZHfRrw"
+            }
+        ]
+    },
+    {
+        abc: `
+            X:124
+            T:Return from Fingal
+            M:C
+            L:1/8
+            K:E Dorian
+            "Em"B2 GF EFGA|B2 GF "A7"E3 B|"D"AGFA d3 A|"Bm"B2 A2 "G"Bcde|!
+            "Em"B2 GF EFGA|B2 GF "A7"E3 B|"D"AGFA "Bm"d2 AB|"Em"F2 E2 E4:|!
+            "Bm7"f2 e2 "A"e2 dc|"G"B2 A2 "D"d3 A|"G"B2 A2 "D"d3 A|"F#m7"B2 A2 "A7"Bcde|!
+            "Bm7"f2 e2 "A"e2 dc|"G"B2 A2 "D"d3 B|AGFA "Bm7"d2 AB|"Em"F2 E2 E4:|
+        `,
+        tags: ["steve's favs", "irish"]
     }
 ];
