@@ -87,6 +87,7 @@ let tunes = [
             M:C
             L:1/8
             K:E Dorian
+            Q:1/4=96
             "Em"B2 GF EFGA|B2 GF "A7"E3 B|"D"AGFA d3 A|"Bm"B2 A2 "G"Bcde|!
             "Em"B2 GF EFGA|B2 GF "A7"E3 B|"D"AGFA "Bm"d2 AB|"Em"F2 E2 E4:|!
             "Bm7"f2 e2 "A"e2 dc|"G"B2 A2 "D"d3 A|"G"B2 A2 "D"d3 A|"F#m7"B2 A2 "A7"Bcde|!
