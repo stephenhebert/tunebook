@@ -15,9 +15,14 @@ message
 	built with abcjs by paul rosen
 
 refactor
-
     use es6 classes - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
     debug in safari
+
+misc improvements
+ . adjust tempo (1/4, 1/2, 3/4 speed)
+ . transpose audio (for cajun)
+ . play without backing chords
+ . show variations 
 
 ----
 
