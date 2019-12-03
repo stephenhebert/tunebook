@@ -21,7 +21,7 @@ refactor
 misc improvements
  . adjust tempo (1/4, 1/2, 3/4 speed)
  . transpose audio (for cajun)
- . play without backing chords
+ . play without backing chords (select: chords + melody, only melody, only chords)
  . show variations 
 
 ----
