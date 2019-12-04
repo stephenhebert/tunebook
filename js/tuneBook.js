@@ -52,7 +52,8 @@ function Variation(tune, variation) {
     this.index = this.tune.variations.length;
 
     this.abc = variation
-        .replace(/(?<=\n) +/g, '')
+//        .replace(/(?<=\n) +/g, '') doesn't work with webkit
+        .replace(/\n +/g, '\n') // double check with change in typeahead / dynamic table for negative lookbehind
         .trim();
 
     this.tune.tuneBook.fieldsToReplace.forEach(ftr => {
