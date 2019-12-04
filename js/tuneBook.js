@@ -26,6 +26,8 @@ function TuneBook(tunes) {
 function SynthAudio() {
 
     this.cursorControl = new CursorControl();
+    this.audioContext;
+    this.midiBuffer;
     this.synthControl;
 
     this.clickListener = function (abcElem) {
@@ -33,17 +35,28 @@ function SynthAudio() {
         if (!lastClicked)
             return;
 
-        ABCJS.synth.playEvent(lastClicked, abcElem.midiGraceNotePitches, synthControl.visualObj.millisecondsPerMeasure()).then(function (response) {
+        ABCJS.synth.playEvent(lastClicked, abcElem.midiGraceNotePitches, this.synthControl.visualObj.millisecondsPerMeasure()).then(function (response) {
             console.log("note played");
         }).catch(function (error) {
             console.log("error playing note", error);
         });
     }
 
+    this.init = function () {
+        window.AudioContext = window.AudioContext ||
+            window.webkitAudioContext ||
+            navigator.mozAudioContext ||
+            navigator.msAudioContext;
+        this.audioContext = new window.AudioContext();
+        this.midiBuffer = new ABCJS.synth.CreateSynth();
+        this.synthControl = new ABCJS.synth.SynthController();
+    }
+
     this.load = function () {
         if (ABCJS.synth.supportsAudio()) {
-            this.synthControl = new ABCJS.synth.SynthController();
-            this.synthControl.load("#audio", this.cursorControl, {displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true});
+            if (!this.synthControl) this.init();
+            if (this.midiBuffer) this.midiBuffer.stop();
+            this.synthControl.load("#audio", this.cursorControl, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
         } else {
             document.querySelector("#audio").innerHTML = "<div class='audio-error'>Audio is not supported in this browser.</div>";
         }
@@ -53,11 +66,11 @@ function SynthAudio() {
 function CursorControl() {
     let self = this; // fix this
 
-    self.onStart = function() {
+    self.onStart = function () {
         let svg = document.querySelector("#notation svg");
     };
     self.beatSubdivisions = 2;
-    self.onEvent = function(ev) {
+    self.onEvent = function (ev) {
         if (ev.measureStart && ev.left === null)
             return; // this was the second part of a tie across a measure line. Just ignore it.
 
@@ -65,16 +78,16 @@ function CursorControl() {
         for (let k = 0; k < lastSelection.length; k++)
             lastSelection[k].classList.remove("highlight");
 
-        for (let i = 0; i < ev.elements.length; i++ ) {
+        for (let i = 0; i < ev.elements.length; i++) {
             let note = ev.elements[i];
             for (let j = 0; j < note.length; j++) {
                 note[j].classList.add("highlight");
             }
         }
     };
-    self.onFinished = function() {
+    self.onFinished = function () {
         let els = document.querySelectorAll("svg .highlight");
-        for (let i = 0; i < els.length; i++ ) {
+        for (let i = 0; i < els.length; i++) {
             els[i].classList.remove("highlight");
         }
     };
@@ -108,7 +121,7 @@ function Variation(tune, variation) {
     this.index = this.tune.variations.length;
 
     this.abc = variation
-//        .replace(/(?<=\n) +/g, '') doesn't work with webkit
+        //        .replace(/(?<=\n) +/g, '') doesn't work with webkit
         .replace(/\n +/g, '\n') // double check with change in typeahead / dynamic table for negative lookbehind
         .trim();
 
@@ -150,14 +163,15 @@ Variation.prototype.render = function () {
     let midiBuffer = new ABCJS.synth.CreateSynth();
     midiBuffer.init({ visualObj: visualObj });
 
-    if (!this.tune.tuneBook.synthAudio.synthControl) this.tune.tuneBook.synthAudio.load();
+    // if (!this.tune.tuneBook.synthAudio.synthControl) 
+    this.tune.tuneBook.synthAudio.load();
     if (this.tune.tuneBook.synthAudio.synthControl) {
         this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, false)
-        .then(function (response) {
-            console.log("Audio successfully loaded.")
-        }).catch(function (error) {
-            console.warn("Audio problem:", error);
-        });
+            .then(function (response) {
+                console.log("Audio successfully loaded.")
+            }).catch(function (error) {
+                console.warn("Audio problem:", error);
+            });
     }
 }
 
