@@ -134,7 +134,7 @@ body {
     }
 
     .left-nav.open {
-        width: 100%;
+        width: 360px;
     }
 
     .left-nav.open+.main {

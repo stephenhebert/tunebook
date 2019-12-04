@@ -23,6 +23,7 @@ misc improvements
  . transpose audio (for cajun)
  . play without backing chords (select: chords + melody, only melody, only chords)
  . show variations 
+ . audio sync issues on mac (try synth mode or download midi)
 
 ----
 
