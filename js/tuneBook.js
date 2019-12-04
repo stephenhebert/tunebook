@@ -26,7 +26,7 @@ function TuneBook(tunes) {
 function SynthAudio() {
 
     this.cursorControl = new CursorControl();
-    this.audioContext;
+    // this.audioContext;
     this.midiBuffer;
     this.synthControl;
 
@@ -43,11 +43,11 @@ function SynthAudio() {
     }
 
     this.init = function () {
-        window.AudioContext = window.AudioContext ||
-            window.webkitAudioContext ||
-            navigator.mozAudioContext ||
-            navigator.msAudioContext;
-        this.audioContext = new window.AudioContext();
+        // window.AudioContext = window.AudioContext ||
+        //     window.webkitAudioContext ||
+        //     navigator.mozAudioContext ||
+        //     navigator.msAudioContext;
+        // this.audioContext = new window.AudioContext();
         this.midiBuffer = new ABCJS.synth.CreateSynth();
         this.synthControl = new ABCJS.synth.SynthController();
     }
@@ -160,13 +160,12 @@ Variation.prototype.render = function () {
     //     });
 
     let visualObj = ABCJS.renderAbc("notation", this.abc, this.tune.tuneBook.abcOptions)[0];
-    let midiBuffer = new ABCJS.synth.CreateSynth();
-    midiBuffer.init({ visualObj: visualObj });
 
     // if (!this.tune.tuneBook.synthAudio.synthControl) 
     this.tune.tuneBook.synthAudio.load();
+    this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj });
     if (this.tune.tuneBook.synthAudio.synthControl) {
-        this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, false)
+        this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, true)
             .then(function (response) {
                 console.log("Audio successfully loaded.")
             }).catch(function (error) {
