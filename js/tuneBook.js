@@ -27,7 +27,7 @@ function SynthAudio() {
 
     this.cursorControl = new CursorControl();
     // this.audioContext;
-    this.midiBuffer;
+    //this.midiBuffer;
     this.synthControl;
 
     this.clickListener = function (abcElem) {
@@ -48,14 +48,13 @@ function SynthAudio() {
         //     navigator.mozAudioContext ||
         //     navigator.msAudioContext;
         // this.audioContext = new window.AudioContext();
-        this.midiBuffer = new ABCJS.synth.CreateSynth();
+        //this.midiBuffer = new ABCJS.synth.CreateSynth();
         this.synthControl = new ABCJS.synth.SynthController();
     }
 
     this.load = function () {
         if (ABCJS.synth.supportsAudio()) {
-            if (!this.synthControl) this.init();
-            if (this.midiBuffer) this.midiBuffer.stop();
+            if (!this.synthControl) this.init(); // maybe it's messing up because it's not being started on user action
             this.synthControl.load("#audio", this.cursorControl, { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true });
         } else {
             document.querySelector("#audio").innerHTML = "<div class='audio-error'>Audio is not supported in this browser.</div>";
@@ -134,38 +133,17 @@ function Variation(tune, variation) {
     this.html = new Html(this);
 }
 
-Variation.prototype.render = function () {
-
-    // ABCJS.midi.stopPlaying();
-
-    // const renderedTune = ABCJS.renderAbc(
-    //     "notation",
-    //     this.abc,
-    //     {
-    //         add_classes: true,
-    //         responsive: "resize",
-    //     });
-
-    // ABCJS.renderMidi("midi", this.abc,
-    //     {
-    //         voicesOff: (onlyBackingTrack || false),
-    //         animate: {
-    //             listener: noteHighlight.animationCallback.bind(noteHighlight),
-    //             target: renderedTune[0],
-    //             qpm: this.getTempo()
-    //         },
-    //         inlineControls: {
-    //             loopToggle: true,
-    //         }
-    //     });
-
+Variation.prototype.render = function (userAction) {
+    userAction = (userAction || false); 
     let visualObj = ABCJS.renderAbc("notation", this.abc, this.tune.tuneBook.abcOptions)[0];
 
-    // if (!this.tune.tuneBook.synthAudio.synthControl) 
     this.tune.tuneBook.synthAudio.load();
+    if (this.tune.tuneBook.synthAudio.midiBuffer) this.midiBuffer.stop();
+    else this.tune.tuneBook.synthAudio.midiBuffer = new ABCJS.synth.CreateSynth();
+
     this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj });
     if (this.tune.tuneBook.synthAudio.synthControl) {
-        this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, true)
+        this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, userAction)
             .then(function (response) {
                 console.log("Audio successfully loaded.")
             }).catch(function (error) {
@@ -197,7 +175,7 @@ Variation.prototype.getTempo = () => {
 //     return (abcString.search(chordRegex) != -1);
 // }
 
-Variation.prototype.display = function () {
+Variation.prototype.display = function (userAction) {
     if (this.tune.tuneBook.current != null
         && this.tune.tuneBook.current.tuneIndex == this.tune.index
         && this.tune.tuneBook.current.variationIndex == this.index)
@@ -207,8 +185,6 @@ Variation.prototype.display = function () {
         tuneIndex: this.tune.index,
         variationIndex: this.index
     }
-
-    //ABCJS.midi.stopPlaying();
 
     document.getElementById("default").classList.add("d-none");
     let tuneContainer = document.getElementById("tune")
@@ -231,7 +207,7 @@ Variation.prototype.display = function () {
 
     tuneContainer.innerHTML = tuneHtml;
 
-    this.render();
+    this.render(userAction);
 }
 
 function Html(variation) {
@@ -251,11 +227,8 @@ Html.prototype.getMidi = function () {
     return `
         <div class="card mb-2" id="card-audio">
             <div class="card-header d-flex justify-content-between">
-                <div class="h5">Audio</div>` +
-        // ((this.variation.hasChords()) ?
-        //     `<div class="small"><input class="align-middle" type="checkbox" onclick="renderMidi(${this.variation.tune.index},${this.variation.index},this.checked)"> Only backing track</div>` :
-        //     '') +
-        `</div>
+                <div class="h5">Audio</div>
+        </div>
             <div class="card-body" id="audio">
             </div>
         </div>`;

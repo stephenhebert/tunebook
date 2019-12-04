@@ -101,7 +101,7 @@
                             prevHeading = currHeading;
                         }
                     }
-                tunelistHtml += `<li class="nav-item"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index})">${tune.title}</a></li>`;
+                tunelistHtml += `<li class="nav-item"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index},0,true)">${tune.title}</a></li>`;
             });
             let tunelistContainer = document.getElementById("tunelist");
             tunelistContainer.innerHTML = tunelistHtml;
@@ -129,10 +129,10 @@
             updateTuneMenu(filteredTunes);
         }
 
-        function displayTune(tuneIndex, variationIndex) {
+        function displayTune(tuneIndex, variationIndex, userAction) {
             // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].display();
             let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
-            if (tune) tune.variations[variationIndex || 0].display();
+            if (tune) tune.variations[variationIndex || 0].display(userAction);
             window.history.pushState("","",
                 `?t=${tuneIndex}` + 
                     ((variationIndex) ? `&v=${variationIndex}`: "")
@@ -192,7 +192,7 @@
         let variationIndex = queryArgs['v'];
         // let onlyBackingTrack = queryArgs['onlyBackingTrack'] ? true : false;
 
-        if (tuneIndex) displayTune(tuneIndex,variationIndex);
+        // if (tuneIndex) displayTune(tuneIndex,variationIndex);
         // if (onlyBackingTrack) renderMidi(tuneIndex,variationIndex, onlyBackingTrack);
 
         // var taggle;
