@@ -11,19 +11,75 @@ function TuneBook(tunes) {
         this.tunes.push(new Tune(this, tune));
     });
 
-    // this.tunes = this.tunes
-    //     .sort((a, b) => {
-    //         if (a.title.toUpperCase() < b.title.toUpperCase())
-    //             return -1;
-    //         else if (a.title.toUpperCase() > b.title.toUpperCase())
-    //             return 1;
-    //         else
-    //             return 0;
-    //     });
+    this.abcOptions = {
+        add_classes: true,
+        responsive: "resize",
+        clickListener: self.clickListener
+    };
 
-    // let i = 0;
-    // this.tunes.forEach(tune => tune.index = i++);
+    this.synthAudio = new SynthAudio();
+
+    this.current = null;
+
 }
+
+function SynthAudio() {
+
+    this.cursorControl = new CursorControl();
+    this.synthControl;
+
+    this.clickListener = function (abcElem) {
+        let lastClicked = abcElem.midiPitches;
+        if (!lastClicked)
+            return;
+
+        ABCJS.synth.playEvent(lastClicked, abcElem.midiGraceNotePitches, synthControl.visualObj.millisecondsPerMeasure()).then(function (response) {
+            console.log("note played");
+        }).catch(function (error) {
+            console.log("error playing note", error);
+        });
+    }
+
+    this.load = function () {
+        if (ABCJS.synth.supportsAudio()) {
+            this.synthControl = new ABCJS.synth.SynthController();
+            this.synthControl.load("#audio", this.cursorControl, {displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true});
+        } else {
+            document.querySelector("#audio").innerHTML = "<div class='audio-error'>Audio is not supported in this browser.</div>";
+        }
+    }
+}
+
+function CursorControl() {
+    let self = this; // fix this
+
+    self.onStart = function() {
+        let svg = document.querySelector("#notation svg");
+    };
+    self.beatSubdivisions = 2;
+    self.onEvent = function(ev) {
+        if (ev.measureStart && ev.left === null)
+            return; // this was the second part of a tie across a measure line. Just ignore it.
+
+        let lastSelection = document.querySelectorAll("#notation svg .highlight");
+        for (let k = 0; k < lastSelection.length; k++)
+            lastSelection[k].classList.remove("highlight");
+
+        for (let i = 0; i < ev.elements.length; i++ ) {
+            let note = ev.elements[i];
+            for (let j = 0; j < note.length; j++) {
+                note[j].classList.add("highlight");
+            }
+        }
+    };
+    self.onFinished = function() {
+        let els = document.querySelectorAll("svg .highlight");
+        for (let i = 0; i < els.length; i++ ) {
+            els[i].classList.remove("highlight");
+        }
+    };
+}
+
 
 function Tune(tuneBook, tune) {
     this.tuneBook = tuneBook;
@@ -65,31 +121,44 @@ function Variation(tune, variation) {
     this.html = new Html(this);
 }
 
-Variation.prototype.render = function (onlyBackingTrack) {
+Variation.prototype.render = function () {
 
-    ABCJS.midi.stopPlaying();
+    // ABCJS.midi.stopPlaying();
 
-    const renderedTune = ABCJS.renderAbc(
-        "notation",
-        this.abc,
-        {
-            add_classes: true,
-            responsive: "resize",
+    // const renderedTune = ABCJS.renderAbc(
+    //     "notation",
+    //     this.abc,
+    //     {
+    //         add_classes: true,
+    //         responsive: "resize",
+    //     });
+
+    // ABCJS.renderMidi("midi", this.abc,
+    //     {
+    //         voicesOff: (onlyBackingTrack || false),
+    //         animate: {
+    //             listener: noteHighlight.animationCallback.bind(noteHighlight),
+    //             target: renderedTune[0],
+    //             qpm: this.getTempo()
+    //         },
+    //         inlineControls: {
+    //             loopToggle: true,
+    //         }
+    //     });
+
+    let visualObj = ABCJS.renderAbc("notation", this.abc, this.tune.tuneBook.abcOptions)[0];
+    let midiBuffer = new ABCJS.synth.CreateSynth();
+    midiBuffer.init({ visualObj: visualObj });
+
+    if (!this.tune.tuneBook.synthAudio.synthControl) this.tune.tuneBook.synthAudio.load();
+    if (this.tune.tuneBook.synthAudio.synthControl) {
+        this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, false)
+        .then(function (response) {
+            console.log("Audio successfully loaded.")
+        }).catch(function (error) {
+            console.warn("Audio problem:", error);
         });
-
-    ABCJS.renderMidi("midi", this.abc,
-        {
-            voicesOff: (onlyBackingTrack || false),
-            animate: {
-                listener: noteHighlight.animationCallback.bind(noteHighlight),
-                target: renderedTune[0],
-                qpm: this.getTempo()
-            },
-            inlineControls: {
-                loopToggle: true,
-            }
-        });
-
+    }
 }
 
 Variation.prototype.getTempo = () => {
@@ -101,32 +170,32 @@ Variation.prototype.getTempo = () => {
             defaultTempo);
 }
 
-Variation.prototype.hasChords = function () {
-    let tuneLines = this.abc.split('\n');
-    i = 0;
-    abcIndex = 0;
-    while (tuneLines[i].search(/^[A-Za-z]:/) == 0) {
-        abcIndex += tuneLines[i].length + 1;
-        i++;
-    }
-    let abcString = this.abc.substr(abcIndex);
-    // <note><accidental><type></bass>
-    let chordRegex = new RegExp(/"[A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?(\([A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?\))?"/);
-    return (abcString.search(chordRegex) != -1);
-}
+// Variation.prototype.hasChords = function () {
+//     let tuneLines = this.abc.split('\n');
+//     i = 0;
+//     abcIndex = 0;
+//     while (tuneLines[i].search(/^[A-Za-z]:/) == 0) {
+//         abcIndex += tuneLines[i].length + 1;
+//         i++;
+//     }
+//     let abcString = this.abc.substr(abcIndex);
+//     // <note><accidental><type></bass>
+//     let chordRegex = new RegExp(/"[A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?(\([A-G][b|#]?(m|min|maj|dim|aug|\+|sus)?(4|5|6|7|9|11|13)?(\/[A-G][b|#]?)?\))?"/);
+//     return (abcString.search(chordRegex) != -1);
+// }
 
 Variation.prototype.display = function () {
-    if (current != null
-        && current.tuneIndex == this.tune.index
-        && current.variationIndex == this.index)
+    if (this.tune.tuneBook.current != null
+        && this.tune.tuneBook.current.tuneIndex == this.tune.index
+        && this.tune.tuneBook.current.variationIndex == this.index)
         return;
 
-    current = {
+    this.tune.tuneBook.current = {
         tuneIndex: this.tune.index,
         variationIndex: this.index
     }
 
-    ABCJS.midi.stopPlaying();
+    //ABCJS.midi.stopPlaying();
 
     document.getElementById("default").classList.add("d-none");
     let tuneContainer = document.getElementById("tune")
@@ -167,14 +236,14 @@ Html.prototype.getTitle = function () {
 
 Html.prototype.getMidi = function () {
     return `
-        <div class="card mb-2" id="card-midi">
+        <div class="card mb-2" id="card-audio">
             <div class="card-header d-flex justify-content-between">
-                <div class="h5">Midi</div>` +
-        ((this.variation.hasChords()) ?
-            `<div class="small"><input class="align-middle" type="checkbox" onclick="renderMidi(${this.variation.tune.index},${this.variation.index},this.checked)"> Only backing track</div>` :
-            '') +
+                <div class="h5">Audio</div>` +
+        // ((this.variation.hasChords()) ?
+        //     `<div class="small"><input class="align-middle" type="checkbox" onclick="renderMidi(${this.variation.tune.index},${this.variation.index},this.checked)"> Only backing track</div>` :
+        //     '') +
         `</div>
-            <div class="card-body" id="midi">
+            <div class="card-body" id="audio">
             </div>
         </div>`;
 };

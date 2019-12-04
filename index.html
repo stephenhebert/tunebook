@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Tunebook - Baton Rouge Fiddle Jam</title>
     <meta name="description" content="Baton Rouge Fiddle Jam">
@@ -12,8 +13,22 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/abcjs-midi.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/abcjs-midi.css"> -->
+	<link rel="stylesheet" type="text/css" href="css/abcjs-audio.css">
     <link rel="stylesheet" type="text/css" href="css/taggle.css">
+    <style>
+		.highlight {
+			fill: #0a9ecc;
+		}
+		.audio-error {
+			color: red;
+			border: 2px solid red;
+			padding: 10px;
+		}
+		.label {
+			color: #888888;
+		}
+	</style>
 
 </head>
 
@@ -47,55 +62,7 @@
                         </div>
                     </div>
 
-                    <div class="container-fluid d-none" id="tune">
-
-                        <div class="row">
-                            <div class="col">
-                                <h2 id="title">Tune title</h2>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-9 col-12 px-1">
-
-                                <div class="card mb-2" id="midi">
-                                    <h5 class="card-header">Midi</h5>
-                                    <div class="card-body">
-                                    </div>
-                                </div>
-
-                                <div class="card mb-2" id="notation">
-                                    <h5 class="card-header">Notation</h5>
-                                    <div class="card-body">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-lg-3 col-12 px-1">
-
-                                <div class="card mb-2" id="tags">
-                                    <h5 class="card-header">Tags</h5>
-                                    <div class="card-body">
-                                        <span class="badge badge-secondary">Tag 1</span>
-                                        <span class="badge badge-secondary">Tag 2</span>
-                                        <span class="badge badge-secondary">Tag 3</span>
-                                    </div>
-                                </div>
-
-                                <div class="card mb-2" id="notes">
-                                    <h5 class="card-header">Notes</h5>
-                                    <div class="card-body">
-                                    </div>
-                                </div>
-
-                                <div class="card mb-2" id="resources">
-                                    <h5 class="card-header">Resources</h5>
-                                    <div class="card-body">
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+                    <div class="container-fluid d-none" id="tune"></div>
 
                 </div>
             </div>
@@ -105,7 +72,8 @@
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/abcjs_midi_5.10.2-min.js"></script>
+    <!-- <script type="text/javascript" src="js/abcjs_midi_5.10.2-min.js"></script> -->
+	<script type="text/javascript" src="js/abcjs_basic_5.10.3-min.js"></script>
     <script type="text/javascript" src="js/taggle.min.js"></script>
     <script type="text/javascript" src="js/tunes.js"></script>
     <script type="text/javascript" src="js/tuneBook.js"></script>
@@ -171,17 +139,17 @@
                 );
         }
 
-        function renderMidi(tuneIndex, variationIndex, onlyBackingTrack) {
-            // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].render(onlyBackingTrack || false);
-            let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
-            if (tune) tune.variations[variationIndex || 0].render(onlyBackingTrack || false);
-            window.history.pushState("","",
-                `?t=${tuneIndex}` +
-                    ((variationIndex) ? `&v=${variationIndex}` : "") + 
-                    ((onlyBackingTrack) ? `&onlyBackingTrack=${onlyBackingTrack}`: "")
-                );
-            if (onlyBackingTrack) document.querySelector('#card-midi input[type=checkbox]').checked = true;
-        }
+        // function renderMidi(tuneIndex, variationIndex, onlyBackingTrack) {
+        //     // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].render(onlyBackingTrack || false);
+        //     let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
+        //     if (tune) tune.variations[variationIndex || 0].render(onlyBackingTrack || false);
+        //     window.history.pushState("","",
+        //         `?t=${tuneIndex}` +
+        //             ((variationIndex) ? `&v=${variationIndex}` : "")
+        //             // ((onlyBackingTrack) ? `&onlyBackingTrack=${onlyBackingTrack}`: "")
+        //         );
+        //     // if (onlyBackingTrack) document.querySelector('#card-midi input[type=checkbox]').checked = true;
+        // }
 
         function getQueryArgs() {
             let query = window.location.search.substring(1);
@@ -196,23 +164,21 @@
             return args;
         }
 
-        var noteHighlight = {
-            colorRange(range, color) {
-                if (range && range.elements) {
-                    range.elements.forEach(function (set) {
-                        set.forEach(function (item) {
-                            item.setAttribute("fill", color);
-                        });
-                    });
-                }
-            },
-            animationCallback(lastRange, currentRange, context) {
-                this.colorRange(lastRange, "#000000");
-                this.colorRange(currentRange, "#3D9AFC");
-            }
-        };
+        // function setTune(userAction) {
+		// 	var visualObj = ABCJS.renderAbc("notation", abc[currentTune], abcOptions)[0];
+		// 	// TODO-PER: This will allow the callback function to have access to timing info - this should be incorporated into the render at some point.
+		// 	var midiBuffer = new ABCJS.synth.CreateSynth();
+		// 	midiBuffer.init({ visualObj: visualObj });
 
-        let current;
+		// 	if (synthControl) {
+        //         synthControl.setTune(visualObj, userAction)
+        //         .then(function (response) {
+		// 			console.log("Audio successfully loaded.")
+		// 		}).catch(function (error) {
+		// 			console.warn("Audio problem:", error);
+		// 		});
+		// 	}
+		// }
 
         let tuneBook = new TuneBook(tunes);
 
@@ -224,10 +190,10 @@
         let queryArgs = getQueryArgs();
         let tuneIndex = queryArgs['t'];
         let variationIndex = queryArgs['v'];
-        let onlyBackingTrack = queryArgs['onlyBackingTrack'] ? true : false;
+        // let onlyBackingTrack = queryArgs['onlyBackingTrack'] ? true : false;
 
         if (tuneIndex) displayTune(tuneIndex,variationIndex);
-        if (onlyBackingTrack) renderMidi(tuneIndex,variationIndex, onlyBackingTrack);
+        // if (onlyBackingTrack) renderMidi(tuneIndex,variationIndex, onlyBackingTrack);
 
         // var taggle;
         // $(document).ready(function () {

@@ -9,31 +9,13 @@
 
 	<link rel="stylesheet" type="text/css" href="../abcjs-audio.css">
 	<style>
-		main {
-			max-width: 770px;
-			margin: 0 auto;
-		}
-		.feedback {
-			height: 600px;
-			font-family: Arial, "sans-serif";
-		}
 		.highlight {
 			fill: #0a9ecc;
-		}
-		.abcjs-cursor {
-			stroke: red;
 		}
 		.audio-error {
 			color: red;
 			border: 2px solid red;
 			padding: 10px;
-		}
-		.click-explanation {
-			color: red;
-			font-style: italic;
-		}
-		.beat {
-			font-weight: bold;
 		}
 		.label {
 			color: #888888;
@@ -46,30 +28,10 @@
 		function CursorControl() {
 			var self = this;
 
-			self.onReady = function() {
-				var downloadLink = document.querySelector(".download");
-				downloadLink.addEventListener("click", download);
-				downloadLink.setAttribute("style", "");
-				var clickEl = document.querySelector(".click-explanation")
-				clickEl.setAttribute("style", "");
-			};
 			self.onStart = function() {
 				var svg = document.querySelector("#paper svg");
-				var cursor = document.createElementNS("http://www.w3.org/2000/svg", "line");
-				cursor.setAttribute("class", "abcjs-cursor");
-				cursor.setAttributeNS(null, 'x1', 0);
-				cursor.setAttributeNS(null, 'y1', 0);
-				cursor.setAttributeNS(null, 'x2', 0);
-				cursor.setAttributeNS(null, 'y2', 0);
-				svg.appendChild(cursor);
-
 			};
 			self.beatSubdivisions = 2;
-			self.onBeat = function(beatNumber, totalBeats, totalTime) {
-				if (!self.beatDiv)
-					self.beatDiv = document.querySelector(".beat");
-				self.beatDiv.innerText = "Beat: " + beatNumber + " Total: " + totalBeats + " Total time: " + totalTime;
-			};
 			self.onEvent = function(ev) {
 				if (ev.measureStart && ev.left === null)
 					return; // this was the second part of a tie across a measure line. Just ignore it.
@@ -78,20 +40,11 @@
 				for (var k = 0; k < lastSelection.length; k++)
 					lastSelection[k].classList.remove("highlight");
 
-				var el = document.querySelector(".feedback").innerHTML = "<div class='label'>Current Note:</div>" + JSON.stringify(ev, null, 4);
 				for (var i = 0; i < ev.elements.length; i++ ) {
 					var note = ev.elements[i];
 					for (var j = 0; j < note.length; j++) {
 						note[j].classList.add("highlight");
 					}
-				}
-
-				var cursor = document.querySelector("#paper svg .abcjs-cursor");
-				if (cursor) {
-					cursor.setAttribute("x1", ev.left - 2);
-					cursor.setAttribute("x2", ev.left - 2);
-					cursor.setAttribute("y1", ev.top);
-					cursor.setAttribute("y2", ev.top + ev.height);
 				}
 			};
 			self.onFinished = function() {
@@ -148,12 +101,6 @@
 		var synthControl;
 
 		function clickListener(abcElem) {
-			var output = "currentTrackMilliseconds: " + abcElem.currentTrackMilliseconds + "<br>" +
-				"midiPitches: " + JSON.stringify(abcElem.midiPitches, null, 4) + "<br>" +
-				"gracenotes: " + JSON.stringify(abcElem.gracenotes, null, 4) + "<br>" +
-				"midiGraceNotePitches: " + JSON.stringify(abcElem.midiGraceNotePitches, null, 4) + "<br>";
-			document.querySelector(".clicked-info").innerHTML = "<div class='label'>Clicked info:</div>" +output;
-
 			var lastClicked = abcElem.midiPitches;
 			if (!lastClicked)
 				return;
@@ -171,9 +118,6 @@
 		};
 
 		function load() {
-			document.querySelector(".next").addEventListener("click", next);
-			document.querySelector(".start").addEventListener("click", start);
-
 			if (ABCJS.synth.supportsAudio()) {
 				synthControl = new ABCJS.synth.SynthController();
 				synthControl.load("#audio", cursorControl, {displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true});
@@ -183,15 +127,10 @@
 			setTune(false);
 		}
 
-		function download() {
-			if (synthControl)
-				synthControl.download(tuneNames[currentTune] + ".wav");
-		}
-
-		function start() {
-			if (synthControl)
-				synthControl.play();
-		}
+		// function start() {
+		// 	if (synthControl)
+		// 		synthControl.play();
+		// }
 
 		function setTune(userAction) {
 			var visualObj = ABCJS.renderAbc("paper", abc[currentTune], abcOptions)[0];
@@ -208,33 +147,13 @@
 			}
 		}
 
-		function next() {
-			currentTune++;
-			if (currentTune >= abc.length)
-				currentTune = 0;
-			setTune(true);
-		}
-
 
 	</script>
 </head>
 <body onload="load()">
 <main>
-	<h1>Demo of abcjs audio capabilities</h1>
-	<p>This is a complete demo of what you can do with matching audio with the visual music.</p>
-	<p>Different pieces of music are provided to demonstrate changing tunes. To toggle between the pieces, click "Next Tune".</p>
-	<p>You are in control of the look of the cursor. Two different techniques are demonstrated: highlighting the note being played and putting a cursor on the page. The class CursorControl must be supplied by your program.</p>
-	<p>As the piece is playing, there are callbacks when the note changes. The info returned in the callback is printed to the page as it is received.</p>
-	<p>The visual control for playing music can look different. In this example, the abcjs-audio.css file has been loaded. You can supply your own css.</p>
-	<button class="next">Next Tune</button>
-	<button class="start">Start/Pause</button>
-	<button class="download" style="display: none;">Download</button>
 	<div id="paper"></div>
 	<div id="audio"></div>
-	<p class="beat"></p>
-	<p class="click-explanation" style="display:none;">Click on a note to play that note.</p>
-	<pre class="clicked-info"></pre>
-	<pre class="feedback"></pre>
 </main>
 </body>
 </html>
