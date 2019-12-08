@@ -1,8 +1,24 @@
+let tuneBookHelpers = {
+    first: function(obj) {
+        switch (typeof(obj)) {
+            case "string":
+                return obj;
+                break;
+            case "object":
+                return obj[0];
+        }
+    },
+    getHeading: function (obj) { return obj.title.charAt(0).toUpperCase(); }
+};
+
 function TuneBook(tunes) {
 
     this.fieldsToReplace = [
-        { field: "title", regex: /\nT: *(.*)(?=\n)/ },
-        { field: "notes", regex: /\nN: *(.*)(?=\n)/ }
+        { key: "title", identifier: 'T', method: "push" },
+        { key: "notes", identifier: 'N', method: "append" },
+        { key: "history", identifier: 'H', method: "append" },
+        { key: "composer", identifier: 'C', method: "append" },
+        { key: "type", identifier: 'R', method: "push" }
     ];
 
     this.tunes = [];
@@ -96,7 +112,7 @@ function CursorControl() {
 function Tune(tuneBook, tune) {
     this.tuneBook = tuneBook;
     this.index = this.tuneBook.tunes.length;
-
+    this.tags = [];
     this.variations = [];
 
     switch (typeof (tune.abc)) {
@@ -108,12 +124,11 @@ function Tune(tuneBook, tune) {
             break;
     }
 
-    this.title = this.variations[0].title;
-    this.tags = tune.tags;
+    this.title = [...new Set(this.variations.flatMap(variation => variation.title))];
+    this.tags = [...new Set(this.tags.concat(tune.tags))];
+    // this.tags = [...new Set(tune.tags.concat(this.variations.flatMap(variation => variation.type)))];
     this.links = tune.links;
 }
-
-Tune.prototype.getHeading = function () { return this.title.charAt(0).toUpperCase(); }
 
 function Variation(tune, variation) {
     this.tune = tune;
@@ -123,13 +138,36 @@ function Variation(tune, variation) {
         //        .replace(/(?<=\n) +/g, '') doesn't work with webkit
         .replace(/\n +/g, '\n') // double check with change in typeahead / dynamic table for negative lookbehind
         .trim();
-
+    
     this.tune.tuneBook.fieldsToReplace.forEach(ftr => {
-        if (ftr.regex.test(this.abc)) {
-            this[ftr.field] = this.abc.match(ftr.regex)[1];
-            this.abc = this.abc.replace(ftr.regex, '');
+        let regexString = `^${ftr.identifier}: *(.*)$\\n`;
+        let regex = new RegExp(regexString,'gm');
+        if (regex.test(this.abc)) {
+            this.abc.match(regex).forEach(match => {
+                let matchText = match.match(new RegExp(regexString,'m'))[1];
+                if (this[ftr.key] == null) {
+                    this[ftr.key] = matchText;
+                } else {
+                    switch (ftr.method) {
+                        case "overwrite":
+                            this[ftr.key] = matchText;
+                            break;
+                        case "append":
+                            this[ftr.key] += `${matchText}`;
+                            break;
+                        case "push":
+                            if (typeof(this[ftr.key]) == "string") {
+                                this[ftr.key] = [this[ftr.key]];
+                            }
+                            this[ftr.key].push(matchText);
+                            break;
+                    }
+                }
+                this.abc = this.abc.replace(regex,'');
+            });
         }
     });
+    if (this.type != null) tune.tags.push(this.type);
     this.html = new Html(this);
 }
 
@@ -138,7 +176,7 @@ Variation.prototype.render = function (userAction) {
     let visualObj = ABCJS.renderAbc("notation", this.abc, this.tune.tuneBook.abcOptions)[0];
 
     this.tune.tuneBook.synthAudio.load();
-    if (this.tune.tuneBook.synthAudio.midiBuffer) this.midiBuffer.stop();
+    if (this.tune.tuneBook.synthAudio.midiBuffer) this.tune.tuneBook.synthAudio.midiBuffer.stop();
     else this.tune.tuneBook.synthAudio.midiBuffer = new ABCJS.synth.CreateSynth();
 
     this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj });
@@ -218,7 +256,7 @@ Html.prototype.getTitle = function () {
     return `
         <div class="row">
             <div class="col">
-                <h2 id="title">${this.variation.title}</h2>
+                <h2 id="title">${tuneBookHelpers.first(this.variation.title)}</h2>
             </div>
         </div>`;
 };

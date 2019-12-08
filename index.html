@@ -81,10 +81,18 @@
     <script>
 
         function updateTuneMenu(tunes) {
-            let showHeadings = (tunes.length > 2) ? true : false;
+            let tunelist = [];
+            tuneBook.tunes.forEach(tune => { 
+                let titles = tune.title;
+                if (typeof(title) == "string") titles = [titles];
+                titles.forEach(title => tunelist.push({index: tune.index, title: title}));
+            });
+
+            
+            let showHeadings = (tunelist.length > 20) ? true : false;
             let tunelistHtml = '';
             let prevHeading = "";
-            tunes
+            tunelist
                 .sort((a, b) => {
                     if (a.title.toUpperCase() < b.title.toUpperCase())
                         return -1;
@@ -95,7 +103,7 @@
                 })
                 .forEach(tune => {
                     if (showHeadings) {
-                        let currHeading = tune.getHeading();
+                        let currHeading = tuneBookHelpers.getHeading(tune);
                         if (currHeading != prevHeading) {
                             tunelistHtml += `<p>${currHeading}</p>`;
                             prevHeading = currHeading;
@@ -119,13 +127,13 @@
             //     }
             // }
             //console.log(`filtering with ${filterTags} and "${filterText}"`);
-            let filteredTunes = tuneBook.tunes
-                .filter(tune => filterTags
-                    .every(tag => tune.tags != null
-                        && tune.tags.includes(tag))
-                    && (filterText.length == 0 ||
-                        tune.title.toLowerCase().includes(filterText.toLowerCase()))
-                );
+            let filteredTunes = tuneBook.tunes;
+                // .filter(tune => filterTags
+                //     .every(tag => tune.tags != null
+                //         && tune.tags.includes(tag))
+                //     && (filterText.length == 0 ||
+                //         tune.title.toLowerCase().includes(filterText.toLowerCase()))
+                // );
             updateTuneMenu(filteredTunes);
         }
 

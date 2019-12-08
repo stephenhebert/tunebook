@@ -70,6 +70,8 @@ body {
     left: -360px;
     visibility: hidden;
 
+    overflow-y: scroll;
+
     padding: 1rem;
 
     z-index: 200;
