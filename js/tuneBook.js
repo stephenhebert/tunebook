@@ -8,7 +8,14 @@ let tuneBookHelpers = {
                 return obj[0];
         }
     },
-    getHeading: function (obj) { return obj.title.charAt(0).toUpperCase(); }
+    getHeading: function (obj) { return obj.title.charAt(0).toUpperCase(); },
+    sleep: function (milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+          currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+      }
 };
 
 function TuneBook(tunes) {
@@ -27,11 +34,11 @@ function TuneBook(tunes) {
         this.tunes.push(new Tune(this, tune));
     });
 
-    this.abcOptions = {
-        add_classes: true,
-        responsive: "resize",
-        clickListener: self.clickListener
-    };
+    // this.abcOptions = {
+    //     add_classes: true,
+    //     responsive: "resize",
+    //     clickListener: self.clickListener
+    // };
 
     this.synthAudio = new SynthAudio();
 
@@ -59,12 +66,12 @@ function SynthAudio() {
     }
 
     this.init = function () {
-        // window.AudioContext = window.AudioContext ||
-        //     window.webkitAudioContext ||
-        //     navigator.mozAudioContext ||
-        //     navigator.msAudioContext;
-        // this.audioContext = new window.AudioContext();
-        //this.midiBuffer = new ABCJS.synth.CreateSynth();
+        window.AudioContext = window.AudioContext ||
+            window.webkitAudioContext ||
+            navigator.mozAudioContext ||
+            navigator.msAudioContext;
+        this.audioContext = new window.AudioContext();
+        // this.midiBuffer = new ABCJS.synth.CreateSynth();
         this.synthControl = new ABCJS.synth.SynthController();
     }
 
@@ -171,15 +178,23 @@ function Variation(tune, variation) {
     this.html = new Html(this);
 }
 
-Variation.prototype.render = function (userAction) {
+Variation.prototype.render = function (visualTranspose, userAction) {
     userAction = (userAction || false); 
-    let visualObj = ABCJS.renderAbc("notation", this.abc, this.tune.tuneBook.abcOptions)[0];
+    let abcOptions = {
+        add_classes: true,
+        responsive: "resize",
+        clickListener: self.clickListener,
+        visualTranspose: visualTranspose
+    };
+    let visualObj = ABCJS.renderAbc("notation", this.abc, abcOptions)[0];
 
     this.tune.tuneBook.synthAudio.load();
+
     if (this.tune.tuneBook.synthAudio.midiBuffer) this.tune.tuneBook.synthAudio.midiBuffer.stop();
     else this.tune.tuneBook.synthAudio.midiBuffer = new ABCJS.synth.CreateSynth();
 
     this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj });
+
     if (this.tune.tuneBook.synthAudio.synthControl) {
         this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, userAction)
             .then(function (response) {
@@ -188,6 +203,8 @@ Variation.prototype.render = function (userAction) {
                 console.warn("Audio problem:", error);
             });
     }
+
+    document.querySelector(".abcjs-midi-tempo").value = this.tune.tuneBook.synthAudio.synthControl.warp;
 }
 
 Variation.prototype.getTempo = () => {
@@ -213,16 +230,18 @@ Variation.prototype.getTempo = () => {
 //     return (abcString.search(chordRegex) != -1);
 // }
 
-Variation.prototype.display = function (userAction) {
+Variation.prototype.display = function (visualTranspose, userAction) {
     if (this.tune.tuneBook.current != null
         && this.tune.tuneBook.current.tuneIndex == this.tune.index
-        && this.tune.tuneBook.current.variationIndex == this.index)
+        && this.tune.tuneBook.current.variationIndex == this.index
+        && this.tune.tuneBook.current.visualTranspose == visualTranspose)
         return;
 
     this.tune.tuneBook.current = {
         tuneIndex: this.tune.index,
-        variationIndex: this.index
-    }
+        variationIndex: this.index,
+        visualTranspose: visualTranspose
+    };
 
     document.getElementById("default").classList.add("d-none");
     let tuneContainer = document.getElementById("tune")
@@ -245,7 +264,7 @@ Variation.prototype.display = function (userAction) {
 
     tuneContainer.innerHTML = tuneHtml;
 
-    this.render(userAction);
+    this.render(visualTranspose,userAction);
 }
 
 function Html(variation) {

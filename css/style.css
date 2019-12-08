@@ -19,6 +19,7 @@ body {
     z-index: 100;
 
     font-size: 2rem;
+    white-space: nowrap;
 
     color: #eee;
 }

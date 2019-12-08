@@ -73,7 +73,8 @@
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <!-- <script type="text/javascript" src="js/abcjs_midi_5.10.2-min.js"></script> -->
-	<script type="text/javascript" src="js/abcjs_basic_5.10.3-min.js"></script>
+	<!-- <script type="text/javascript" src="js/abcjs_basic_5.10.3-min.js"></script> -->
+	<script type="text/javascript" src="js/abcjs_basic_5.10.3.js"></script>
     <script type="text/javascript" src="js/taggle.min.js"></script>
     <script type="text/javascript" src="js/tunes.js"></script>
     <script type="text/javascript" src="js/tuneBook.js"></script>
@@ -137,10 +138,10 @@
             updateTuneMenu(filteredTunes);
         }
 
-        function displayTune(tuneIndex, variationIndex, userAction) {
+        function displayTune(tuneIndex, variationIndex, visualTranspose, userAction) {
             // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].display();
             let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
-            if (tune) tune.variations[variationIndex || 0].display(userAction);
+            if (tune) tune.variations[variationIndex || 0].display((visualTranspose||0),userAction);
             window.history.pushState("","",
                 `?t=${tuneIndex}` + 
                     ((variationIndex) ? `&v=${variationIndex}`: "")
