@@ -192,16 +192,16 @@ Variation.prototype.render = function (visualTranspose, userAction) {
     let originalKey = this.getKey().join('').replace(/(maj)|(in)/i,'');
     let currentKeySignature = visualObj.getKeySignature();
     let currentKey = [currentKeySignature.root, currentKeySignature.acc, currentKeySignature.mode.toLowerCase()].join('');
-    document.querySelector("#key").innerText = 
+    document.querySelector("#key").innerText = '[' +
         ((currentKey.toUpperCase() != originalKey.toUpperCase()) ? `${originalKey} -> ` : '') +
-        `${currentKey}`;
+        `${currentKey}]`;
 
     this.tune.tuneBook.synthAudio.load();
 
     if (this.tune.tuneBook.synthAudio.midiBuffer) this.tune.tuneBook.synthAudio.midiBuffer.stop();
     else this.tune.tuneBook.synthAudio.midiBuffer = new ABCJS.synth.CreateSynth();
 
-    this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj, midiTranspose: -2 });
+    this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj });
 
     if (this.tune.tuneBook.synthAudio.synthControl) {
         this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, userAction)
@@ -213,6 +213,8 @@ Variation.prototype.render = function (visualTranspose, userAction) {
     }
 
     document.querySelector(".abcjs-midi-tempo").value = this.tune.tuneBook.synthAudio.synthControl.warp;
+    document.querySelector("#transpose-control input").value = visualTranspose;
+
 }
 
 Variation.prototype.getTempo = () => {
