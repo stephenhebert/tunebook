@@ -164,7 +164,7 @@ function Variation(tune, variation) {
                             this[ftr.key] = matchText;
                             break;
                         case "append":
-                            this[ftr.key] += `${matchText}`;
+                            this[ftr.key] += `\n${matchText}`;
                             break;
                         case "push":
                             if (typeof(this[ftr.key]) == "string") {
