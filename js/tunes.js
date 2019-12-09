@@ -86,7 +86,7 @@ let tunes = [
             T:Return from Fingal
             M:C
             L:1/8
-            K:E Dorian
+            K:Edor
             Q:1/4=96
             "Em"B2 GF EFGA|B2 GF "A7"E3 B|"D"AGFA d3 A|"Bm"B2 A2 "G"Bcde|!
             "Em"B2 GF EFGA|B2 GF "A7"E3 B|"D"AGFA "Bm"d2 AB|"Em"F2 E2 E4:|!

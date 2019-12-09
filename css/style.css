@@ -74,6 +74,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .wrapper {
     margin-top: 50px;
+    margin-bottom: 40px;
 }
 
 .main {
@@ -95,10 +96,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     right: 1em;
 }
 
-#audio {
-    min-width: 70%;
-}
-
 #transpose-control input {
     border-radius: 2px;
     border: none;
@@ -111,7 +108,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     position: fixed;
     top: 50px;
     bottom: 0;
-    width: 360px;
+    width: 0;
     left: -360px;
     visibility: hidden;
 
@@ -139,6 +136,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .left-nav.open {
     left: 0;
+    width: 360px;
     visibility: visible;
 }
 
@@ -188,14 +186,6 @@ button, input {
 
 /* mobile */
 @media (min-width: 0px) {
-    .left-nav {
-        width: 0;
-    }
-
-    .left-nav.open {
-        width: 360px;
-    }
-
     .left-nav.open+.main {
         margin-left: 0;
     }
@@ -203,21 +193,10 @@ button, input {
 
 /* desktop */
 @media (min-width: 992px) {
-    .left-nav {
-        width: 0;
-    }
-
-    .left-nav.open {
-        width: 360px;
-    }
-
     .left-nav.open+.main {
         margin-left: 360px;
     }
-
-
 }
-
 
 .abcjs-tempo-wrapper label {
     margin-bottom: 0 !important;

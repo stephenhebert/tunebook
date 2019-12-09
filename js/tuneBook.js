@@ -231,7 +231,7 @@ Variation.prototype.getTempo = () => {
 }
 
 Variation.prototype.getKey = function () {
-    let keyRegex = new RegExp(/\nK: *([A-G][#b]?)(m|min|maj|Dor|Phr|Lyd|Mix|Loc)?(?=\n)/i);
+    let keyRegex = new RegExp(/\nK: *([A-G][#b]?)(m|min|maj|Dor|Phr|Lyd|Mix|Loc| Dorian)?(?=\n)/i);
     return this.abc.match(keyRegex).splice(1);
 }
 
@@ -277,9 +277,9 @@ Variation.prototype.display = function (visualTranspose, userAction) {
                 `${this.html.getNotation()}
             </div>
             <div class="col-lg-3 col-12 px-1">
-                ${this.html.getTags()}
-                ${this.html.getNotes()}
-                ${this.html.getLinks()}
+                ${this.html.getTags()}` +
+                // ${this.html.getNotes()}
+                `${this.html.getLinks()}
             </div>
         </div>`;
 
