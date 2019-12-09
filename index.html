@@ -35,7 +35,7 @@
 <body>
 
     <div class="title d-flex flex-row">
-        <a class="nav-toggle" href="javascript://" onclick="document.querySelector('.left-nav').classList.toggle('open')"><i
+        <a class="nav-toggle" href="javascript://" onclick="toggleNavMenu()"><i
                 class="fa fa-bars"></i></a>
         <h1>Baton Rouge Fiddle Jam</h1>
     </div>
@@ -50,13 +50,16 @@
 
             <div class="left-nav">
                 <!-- add close button -->
-                <!-- <div class="input textarea clearfix search"></div> -->
-                <ul id="tunelist"></ul>
+                <div class="close" onclick="closeNavMenu()"><span class="fa fa-times text-light"></span></div>
+                <div class="" style="width: 85%;">
+                    <div class="input textarea clearfix search"></div>
+                    <ul id="tunelist"></ul>
+                </div>
             </div>
 
             <div class="col main">
 
-                <div class="body py-3">
+                <div class="body py-2">
 
                     <div class="container-fluid" id="default">
                         <div class="row">
@@ -76,23 +79,30 @@
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <!-- <script type="text/javascript" src="js/abcjs_midi_5.10.2-min.js"></script> -->
 	<!-- <script type="text/javascript" src="js/abcjs_basic_5.10.3-min.js"></script> -->
-	<script type="text/javascript" src="js/abcjs_basic_5.10.3.js"></script>
+    <script type="text/javascript" src="js/abcjs_basic_5.10.3.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/taggle.min.js"></script>
     <script type="text/javascript" src="js/tunes.js"></script>
     <script type="text/javascript" src="js/tuneBook.js"></script>
 
     <script>
 
+        function toggleNavMenu() {
+            document.querySelector('.left-nav').classList.toggle('open');
+        }
+
+        function closeNavMenu() {
+            document.querySelector('.left-nav').classList.remove('open');
+        }
+
         function updateTuneMenu(tunes) {
             let tunelist = [];
-            tuneBook.tunes.forEach(tune => { 
+            tunes.forEach(tune => { 
                 let titles = tune.title;
                 if (typeof(title) == "string") titles = [titles];
                 titles.forEach(title => tunelist.push({index: tune.index, title: title}));
             });
-
             
             let showHeadings = (tunelist.length > 20) ? true : false;
             let tunelistHtml = '';
@@ -110,35 +120,35 @@
                     if (showHeadings) {
                         let currHeading = tuneBookHelpers.getHeading(tune);
                         if (currHeading != prevHeading) {
-                            tunelistHtml += `<p>${currHeading}</p>`;
+                            tunelistHtml += `<p class="h6">${currHeading}</p>`;
                             prevHeading = currHeading;
                         }
                     }
-                tunelistHtml += `<li class="nav-item hanging-indent"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index},0,0,true)">${tune.title}</a></li>`;
+                tunelistHtml += `<li class="nav-item hanging-indent h5"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index},0,0,true)">${tune.title}</a></li>`;
             });
             let tunelistContainer = document.getElementById("tunelist");
             tunelistContainer.innerHTML = tunelistHtml;
         }
 
         function filterTuneMenu() {
-            //let filterTags = taggle.getTagValues();
-            //let filterText = taggle.getInput().value;
+            let filterTags = taggle.getTagValues();
+            let filterText = taggle.getInput().value;
             // workaround for weird functionality
-            //let lastTag = filterTags.slice(-1).pop();
-            // if (lastTag) {
-            //     let indexOfLastTag = filterText.indexOf(lastTag);
-            //     if ((indexOfLastTag + lastTag.length) == filterText.length) {
-            //         filterText = filterText.substr(0, indexOfLastTag);
-            //     }
-            // }
-            //console.log(`filtering with ${filterTags} and "${filterText}"`);
-            let filteredTunes = tuneBook.tunes;
-                // .filter(tune => filterTags
-                //     .every(tag => tune.tags != null
-                //         && tune.tags.includes(tag))
-                //     && (filterText.length == 0 ||
-                //         tune.title.toLowerCase().includes(filterText.toLowerCase()))
-                // );
+            let lastTag = filterTags.slice(-1).pop();
+            if (lastTag) {
+                let indexOfLastTag = filterText.indexOf(lastTag);
+                if ((indexOfLastTag + lastTag.length) == filterText.length) {
+                    filterText = filterText.substr(0, indexOfLastTag);
+                }
+            }
+            console.log(`filtering with ${filterTags} and "${filterText}"`);
+            let filteredTunes = tuneBook.tunes
+                .filter(tune => filterTags
+                    .every(tag => tune.tags != null
+                        && tune.tags.includes(tag))
+                    && (filterText.length == 0 ||
+                        tuneBookHelpers.first(tune.title).toLowerCase().includes(filterText.toLowerCase()))
+                );
             updateTuneMenu(filteredTunes);
         }
 
@@ -148,21 +158,11 @@
             if (tune) tune.variations[variationIndex || 0].display((visualTranspose||0),userAction);
             window.history.pushState("","",
                 `?t=${tuneIndex}` + 
-                    ((variationIndex) ? `&v=${variationIndex}`: "")
+                    ((variationIndex) ? `&v=${variationIndex}`: "") + 
+                    ((visualTranspose) ? `&vt=${visualTranspose}`: "")
+
                 );
         }
-
-        // function renderMidi(tuneIndex, variationIndex, onlyBackingTrack) {
-        //     // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].render(onlyBackingTrack || false);
-        //     let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
-        //     if (tune) tune.variations[variationIndex || 0].render(onlyBackingTrack || false);
-        //     window.history.pushState("","",
-        //         `?t=${tuneIndex}` +
-        //             ((variationIndex) ? `&v=${variationIndex}` : "")
-        //             // ((onlyBackingTrack) ? `&onlyBackingTrack=${onlyBackingTrack}`: "")
-        //         );
-        //     // if (onlyBackingTrack) document.querySelector('#card-midi input[type=checkbox]').checked = true;
-        // }
 
         function getQueryArgs() {
             let query = window.location.search.substring(1);
@@ -177,22 +177,6 @@
             return args;
         }
 
-        // function setTune(userAction) {
-		// 	var visualObj = ABCJS.renderAbc("notation", abc[currentTune], abcOptions)[0];
-		// 	// TODO-PER: This will allow the callback function to have access to timing info - this should be incorporated into the render at some point.
-		// 	var midiBuffer = new ABCJS.synth.CreateSynth();
-		// 	midiBuffer.init({ visualObj: visualObj });
-
-		// 	if (synthControl) {
-        //         synthControl.setTune(visualObj, userAction)
-        //         .then(function (response) {
-		// 			console.log("Audio successfully loaded.")
-		// 		}).catch(function (error) {
-		// 			console.warn("Audio problem:", error);
-		// 		});
-		// 	}
-		// }
-
         let tuneBook = new TuneBook(tunes);
 
         var tagList = [...new Set(tuneBook.tunes.flatMap(tune => tune.tags).sort().filter(tag => tag.length > 0))];
@@ -203,39 +187,38 @@
         let queryArgs = getQueryArgs();
         let tuneIndex = queryArgs['t'];
         let variationIndex = queryArgs['v'];
-        // let onlyBackingTrack = queryArgs['onlyBackingTrack'] ? true : false;
+        let visualTranspose = queryArgs['vt'];
 
-        // if (tuneIndex) displayTune(tuneIndex,variationIndex);
-        // if (onlyBackingTrack) renderMidi(tuneIndex,variationIndex, onlyBackingTrack);
+        if (tuneIndex) displayTune(tuneIndex,variationIndex,visualTranspose);
 
-        // var taggle;
-        // $(document).ready(function () {
-        //     taggle = new Taggle($('.search')[0], {
-        //         placeholder: "Search...",
-        //         allowedTags: tagList,
-        //         saveOnBlur: true,
-        //         duplicateTagClass: 'bounce',
-        //         onTagAdd: filterTuneMenu,
-        //         onTagRemove: filterTuneMenu
-        //     });
-        //     var container = taggle.getContainer();
-        //     var input = taggle.getInput();
-        //     $(input).autocomplete({
-        //         source: tagList, // See jQuery UI documentaton for options
-        //         appendTo: container,
-        //         position: { at: "left bottom", of: container },
-        //         select: function (event, data) {
-        //             event.preventDefault();
-        // //            Add the tag if user clicks
-        //             if (event.which === 1) {
-        //                 taggle.add(data.item.value);
-        //             }
-        //         }
-        //     });
-        //     $(input).on('input', filterTuneMenu);
-        //     $(input).on('change', filterTuneMenu);
+        var taggle;
+        $(document).ready(function () {
+            taggle = new Taggle($('.search')[0], {
+                placeholder: "Search...",
+                allowedTags: tagList,
+                saveOnBlur: true,
+                duplicateTagClass: 'bounce',
+                onTagAdd: filterTuneMenu,
+                onTagRemove: filterTuneMenu
+            });
+            var container = taggle.getContainer();
+            var input = taggle.getInput();
+            $(input).autocomplete({
+                source: tagList, // See jQuery UI documentaton for options
+                appendTo: container,
+                position: { at: "left bottom", of: container },
+                select: function (event, data) {
+                    event.preventDefault();
+                    // Add the tag if user clicks
+                    if (event.which === 1) {
+                        taggle.add(data.item.value);
+                    }
+                }
+            });
+            $(input).on('input', filterTuneMenu);
+            $(input).on('change', filterTuneMenu);
+        });
 
-        // });
     </script>
 
 </body>

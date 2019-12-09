@@ -60,7 +60,7 @@ let tunes = [
             O:england
             M:4/4
             L:1/8
-            S:John Hartford's "Wild Hog in the Redbrush" transcribed by Llarry Brandon
+            S:John Hartford's "Wild Hog in the Redbrush" transcribed by Larry Brandon
             K:D
             Q:1/2=110
             |:"Em"e3d .B2 Bd|efed .B2 BA|"G"GABc d2 dc|dBcA "D" BcBA|

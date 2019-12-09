@@ -25,7 +25,11 @@ function TuneBook(tunes) {
         { key: "notes", identifier: 'N', method: "append" },
         { key: "history", identifier: 'H', method: "append" },
         { key: "composer", identifier: 'C', method: "append" },
-        { key: "type", identifier: 'R', method: "push" }
+        { key: "type", identifier: 'R', method: "push" },
+        { key: "origin", identifier: 'O', method: "append" },
+        { key: "source", identifier: 'S', method: "append" },
+        { key: "recordings", identifier: 'D', method: "push" },
+        { key: "transcription", identifier: 'Z', method: "append" }
     ];
 
     this.tunes = [];
@@ -292,7 +296,7 @@ Html.prototype.getTitle = function () {
     return `
         <div class="row">
             <div class="col">
-                <h2 id="title">${tuneBookHelpers.first(this.variation.title)}</h2>
+                <h2 id="title" class="display-4">${tuneBookHelpers.first(this.variation.title)}</h2>
             </div>
         </div>`;
 };
@@ -354,7 +358,7 @@ Html.prototype.getLinks = function () {
         <div class="card mb-2" id="card-resources">
             <h5 class="card-header">Resources</h5>
             <div class="card-body">
-                <ul class="list-unstyled small">${tuneLinksHtml}</ul>
+                <ul class="list-unstyled">${tuneLinksHtml}</ul>
             </div>
         </div>`
 };
