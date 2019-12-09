@@ -272,11 +272,11 @@ Variation.prototype.display = function (visualTranspose, userAction) {
     let tuneHtml = `
         ${this.html.getTitle()}
         <div class="row">
-            <div class="col-lg-9 col-12 px-1">` +
+            <div class="col-xl-9 col-12 px-1">` +
                 // ${this.html.getMidi()}
                 `${this.html.getNotation()}
             </div>
-            <div class="col-lg-3 col-12 px-1">
+            <div class="col-xl-3 col-12 px-1">
                 ${this.html.getTags()}` +
                 // ${this.html.getNotes()}
                 `${this.html.getLinks()}
