@@ -188,12 +188,20 @@ Variation.prototype.render = function (visualTranspose, userAction) {
     };
     let visualObj = ABCJS.renderAbc("notation", this.abc, abcOptions)[0];
 
+    // update key display
+    let originalKey = this.getKey().join('').replace(/(maj)|(in)/i,'');
+    let currentKeySignature = visualObj.getKeySignature();
+    let currentKey = [currentKeySignature.root, currentKeySignature.acc, currentKeySignature.mode.toLowerCase()].join('');
+    document.querySelector("#key").innerText = 
+        ((currentKey.toUpperCase() != originalKey.toUpperCase()) ? `${originalKey} -> ` : '') +
+        `${currentKey}`;
+
     this.tune.tuneBook.synthAudio.load();
 
     if (this.tune.tuneBook.synthAudio.midiBuffer) this.tune.tuneBook.synthAudio.midiBuffer.stop();
     else this.tune.tuneBook.synthAudio.midiBuffer = new ABCJS.synth.CreateSynth();
 
-    this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj });
+    this.tune.tuneBook.synthAudio.midiBuffer.init({ visualObj: visualObj, midiTranspose: -2 });
 
     if (this.tune.tuneBook.synthAudio.synthControl) {
         this.tune.tuneBook.synthAudio.synthControl.setTune(visualObj, userAction)
@@ -214,6 +222,11 @@ Variation.prototype.getTempo = () => {
         tempoRegex.test(this.abc) ?
             this.abc.match(tempoRegex)[2] :
             defaultTempo);
+}
+
+Variation.prototype.getKey = function () {
+    let keyRegex = new RegExp(/\nK: *([A-G][#b]?)(m|min|maj|Dor|Phr|Lyd|Mix|Loc)?(?=\n)/i);
+    return this.abc.match(keyRegex).splice(1);
 }
 
 // Variation.prototype.hasChords = function () {
@@ -247,13 +260,15 @@ Variation.prototype.display = function (visualTranspose, userAction) {
     let tuneContainer = document.getElementById("tune")
     tuneContainer.classList.remove("d-none");
     tuneContainer.innerHTML = '';
+    document.querySelector(".footer").classList.add("show");
+    document.querySelector(".left-nav").style.bottom = '42px';
 
     let tuneHtml = `
         ${this.html.getTitle()}
         <div class="row">
-            <div class="col-lg-9 col-12 px-1">
-                ${this.html.getMidi()}
-                ${this.html.getNotation()}
+            <div class="col-lg-9 col-12 px-1">` +
+                // ${this.html.getMidi()}
+                `${this.html.getNotation()}
             </div>
             <div class="col-lg-3 col-12 px-1">
                 ${this.html.getTags()}
@@ -285,7 +300,7 @@ Html.prototype.getMidi = function () {
         <div class="card mb-2" id="card-audio">
             <div class="card-header d-flex justify-content-between">
                 <div class="h5">Audio</div>
-        </div>
+            </div>
             <div class="card-body" id="audio">
             </div>
         </div>`;
@@ -294,7 +309,10 @@ Html.prototype.getMidi = function () {
 Html.prototype.getNotation = function () {
     return `
         <div class="card mb-2" id="card-notation">
-            <h5 class="card-header">Notation</h5>
+            <div class="card-header d-flex justify-content-between align-middle">
+                <div class="h5">Notation</div>
+                <div class="h5" id="key"></div>
+            </div>
             <div class="card-body" id="notation">
             </div>
         </div>`;

@@ -38,7 +38,11 @@
         <a class="nav-toggle" href="javascript://" onclick="document.querySelector('.left-nav').classList.toggle('open')"><i
                 class="fa fa-bars"></i></a>
         <h1>Baton Rouge Fiddle Jam</h1>
+    </div>
 
+    <div class="footer d-flex flex-row">
+        <div id="audio"></div>
+        <div id="transpose-control">Transpose: <input type="number" value="0" oninput="displayTune(tuneBook.current.tuneIndex,tuneBook.current.variationIndex,this.value)"></div>
     </div>
 
     <div class="wrapper container-fluid">
@@ -110,7 +114,7 @@
                             prevHeading = currHeading;
                         }
                     }
-                tunelistHtml += `<li class="nav-item"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index},0,true)">${tune.title}</a></li>`;
+                tunelistHtml += `<li class="nav-item"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index},0,0,true)">${tune.title}</a></li>`;
             });
             let tunelistContainer = document.getElementById("tunelist");
             tunelistContainer.innerHTML = tunelistHtml;

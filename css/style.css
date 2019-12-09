@@ -24,6 +24,38 @@ body {
     color: #eee;
 }
 
+.footer {
+    border-top: 5px solid #999;
+    padding: 5px 10px;
+    /* font-size: 36pt; */
+    vertical-align: middle;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 30px;
+    background-color: #333;
+    z-index: 100;
+    margin-bottom: -30px;
+
+    font-size: 1rem;
+    white-space: nowrap;
+
+    color: #eee;
+
+    transition-timing-function: ease-in-out;
+    transition-duration: .3s;
+    transition-property: margin-bottom;
+}
+
+.footer.show {
+    margin-bottom: 0px;
+}
+
+.footer div {
+    margin-right: 0.5em;
+}
+
 .title .nav-toggle {
     display: inline-block;
     /* width: 1em; */
@@ -42,8 +74,12 @@ body {
 
 .title h1 {
     font-size: inherit;
-    line-height: inherit;
     padding: 0 0.5rem;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    line-height: inherit !important;
+    margin-bottom: inherit !important;
 }
 
 .wrapper {
@@ -63,9 +99,21 @@ body {
     transition-property: margin-left;
 }
 
+#audio {
+    min-width: 400px;
+}
+
+#transpose-control input {
+    border-radius: 2px;
+    border: none;
+    width: 40px;
+    padding-left: 4px;
+    box-sizing: border-box;
+}
+
 .left-nav {
     position: fixed;
-    top: 71px;
+    top: 72px;
     bottom: 0;
     width: 360px;
     left: -360px;
@@ -90,7 +138,7 @@ body {
 
     transition-timing-function: ease-in-out;
     transition-duration: .3s;
-    transition-property: left, width, visibility;
+    transition-property: left, width, visibility, bottom;
 }
 
 .left-nav.open {
@@ -102,6 +150,10 @@ body {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+button, input {
+    line-height: normal !important;
 }
 
 /* .nav-underline .nav-link {
@@ -160,4 +212,9 @@ body {
     }
 
 
+}
+
+
+.abcjs-tempo-wrapper label {
+    margin-bottom: 0 !important;
 }
