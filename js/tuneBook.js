@@ -295,9 +295,12 @@ function Html(variation) {
 Html.prototype.getTitle = function () {
     return `
         <div class="row">
-            <div class="col">
-                <h2 id="title" class="display-4">${tuneBookHelpers.first(this.variation.title)}</h2>
-            </div>
+            <div class="col header">
+                <h2 id="title" class="display-4">${tuneBookHelpers.first(this.variation.title)}</h2>` +
+                ((this.variation.tune.title.length > 1) ? 
+                    `<div class="small display-4 text-muted">aka ${this.variation.tune.title.slice(1).join("; ")}</div>` :
+                    '') +
+            `</div>
         </div>`;
 };
 

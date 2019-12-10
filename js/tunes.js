@@ -507,7 +507,7 @@ let tunes = [
             Beed e2ef|gaaf gfed|BEED EFGA|BGAF G4:|
         `,
         tags: ["irish","waltz"]
-    }
+    },
     //,
     // {
     //     abc: `
@@ -547,5 +547,21 @@ let tunes = [
 
     //     `,
     //     tags: ["christmas"]
-    // }
+    // },
+    {
+        abc: `
+            X:3
+            T:Reel de Joie
+            R:reel
+            L:1/8
+            Q:1/4=160
+            M:4/4
+            K:D
+            ABde | "D" f3 g fedc | "Bm" B3 A Bcde | "D" f3 g fedc | "Bm" B3 B2 ABA | 
+            "D" f3 g fedc | "Bm" B2 Bc BAFG | "G"ABAG "A"FDED | "D"!slide!D4 :|
+            |: z2 dc | "Bm"B3 c BAFA | B3 c BAFA | B3 c BAFA | B3 B2 AFA | 
+            "G"B3 c BAFA | B2 Bc BAFG | ABAG "A"FDED | "D"!slide!D4 :| 
+                `,
+        tags: ['cajun',"steve's favs"]
+    }
 ];

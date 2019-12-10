@@ -2,13 +2,11 @@
 
 
 menu
-	add shadow
 	add close button
 	use default bootstrap nav toggle 
 	
 styles
 	add built in
-	
 	
 message
 	last updated date
@@ -19,10 +17,9 @@ refactor
     debug in safari
 
 misc improvements
- . adjust tempo (1/4, 1/2, 3/4 speed)
- . transpose audio (for cajun)
  . play without backing chords (select: chords + melody, only melody, only chords)
  . show variations 
+ . transpose is cut off in portrait mode on phone
  . audio sync issues on mac (try synth mode or download midi)
 
 ----
@@ -37,19 +34,12 @@ misc improvements
 ## NAV BAR 
 * [x] add tag filter (it's kind of ugly) 
 * [x] reveal pattern instead of obscuring
-* rebuild from scratch 
 * add close button
-
 
 ## DEFAULT PAGE
 * add logo
 * "start here" arrow 
-  
-## TUNE PAGE 
-* resources
-  
-## MOBILE
-  
+    
 ## REFACTOR
 * [x] refactor tunes into custom class 
     * make it object oriented (tunelist.whatever(), tune.whatever())
