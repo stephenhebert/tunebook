@@ -331,7 +331,7 @@ Html.prototype.getTags = function () {
     if (this.variation.tune.tags == null || typeof (this.variation.tune.tags) != "object") return '';
 
     let tagsHtml = '';
-    this.variation.tune.tags.sort().forEach(tag => tagsHtml += `<span class="badge badge-secondary">${tag.toLowerCase()}</span> `);
+    this.variation.tune.tags.sort().forEach(tag => tagsHtml += `<span class="badge badge-secondary">${tag.toLowerCase()}</span>`);
 
     return `
         <div class="card mb-2" id="card-tags">
