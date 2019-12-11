@@ -561,7 +561,40 @@ let tunes = [
             "D" f3 g fedc | "Bm" B2 Bc BAFG | "G"ABAG "A"FDED | "D"!slide!D4 :|
             |: z2 dc | "Bm"B3 c BAFA | B3 c BAFA | B3 c BAFA | B3 B2 AFA | 
             "G"B3 c BAFA | B2 Bc BAFG | ABAG "A"FDED | "D"!slide!D4 :| 
-                `,
+        `,
         tags: ['cajun',"steve's favs"]
+    },
+    {
+        abc: `
+            X:4
+            T:Grandpa's Waltz
+            R:waltz
+            L:1/8
+            Q:1/4=90
+            M:3/4
+            K:G
+            (3::2 g2a (3gag || "C" e>d c2 c>d  | e4 (3ed!slide!^c | "A" !slide!A2- (3::2 A2B (3::2 A2G | (3::2 !slide!F2D !slide!f2 (3fed  | "D"!slide!f2- (3::2 f2g | 
+            [1 (3 f2g/f/ | (3::2 e2d !slide!f2 (3::2 e2d | "G" {Bc}d4 (3dBA | G2 :| [2 (3::2 f2g | (3::4 f/g/fe (3::2 d2B (3::2 A2F | "G" G2 |:
+            (3::2 B2d (3::2 e2f | g2 (3::2 d2g (3::2 b2a | (3g/a/g2 (3::2 d2g (3::2 b2a | (3::2 g2f (3::2 e2d (3::4 B/c/BA | 
+            "A" !slide!A2 (3::2 A2B (3::2 d2e | "D" (3 f/g/f2 (3::2 d2f (3::2 a2g | (3::4 f/g/fe (3::2 d2f (3::2 a2g |
+            [1 (3::2 f2e (3::2 d2B (3::2 A2G | "G" B4 (3::4 B/c/BA | (3::2 G2A  :| [2 (3::2 f2e (3::2 d2B (3::2 A2F | "G" G4 (3::2 G2F | G2 || 
+        `,
+        tags: ['cajun',"steve's favs"]
+    },
+    {
+        abc: `
+            X:2
+            T:Kitchen Girl
+            C:Trad.
+            K:D
+            [c4a4] [B4g4]|efed c2cd|e2f2 gaba|g2e2 e2fg|
+            a4 g4|efed cdef|g2d2 efed|c2A2 A4:|
+            K:G
+            ABcA BAGB|ABAG EDEG|A2AB c2d2|e3f edcB|ABcA BAGB|
+            ABAG EGAB|cBAc BAG2|A4 A4:|
+        `,
+        tags: ['contra']
+
+
     }
 ];
