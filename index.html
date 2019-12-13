@@ -52,7 +52,7 @@
 
             <div class="col main">
                 <div class="body py-2">
-                    <div class="container-fluid" id="default">
+                    <div class="container-fluid" style="min-height: 300px;" id="default">
                         <div class="row">
                             <div class="col">
                                 <span>Select a tune from the menu.</span>
@@ -60,6 +60,9 @@
                         </div>
                     </div>
                     <div class="container-fluid d-none" id="tune"></div>
+                    <div class="container-fluid px-4 py-2 border-top credits">
+                        <span class="text-muted small"><img src="img/sig.png"> Stephen Hebert 2019. Powered by <a href="https://www.abcjs.net/" target="_blank">abcjs</a>.</span>
+                    </div>
                 </div>
             </div>
 
@@ -68,7 +71,7 @@
 
     <div class="footer d-flex flex-row">
         <div id="audio" class="flex-grow-1"></div>
-        <div id="transpose-control">Transpose: <input type="number" value="0" oninput="displayTune(tuneBook.current.tuneIndex,tuneBook.current.variationIndex,this.value)"></div>
+        <div id="transpose-control" class="small my-auto">Transpose: <input type="number" value="0" oninput="displayTune(tuneBook.current.tuneIndex,tuneBook.current.variationIndex,this.value)"></div>
     </div>
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>

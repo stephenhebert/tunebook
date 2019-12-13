@@ -51,7 +51,7 @@ body {
 }
 
 .footer div {
-    margin-right: 0.5em;
+    margin-right: 0.25em;
 }
 
 .title .nav-toggle {
@@ -142,11 +142,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     transition-property: left, width, visibility, bottom;
 }
 
-.left-nav.open {
-    left: 0;
-    width: 360px;
-    visibility: visible;
-}
 
 #tunelist {
     list-style-type: none;
@@ -198,10 +193,29 @@ button, input {
     padding-top: 0 !important;
 }
 
+.left-nav.open {
+    left: 0;
+    width: 360px;
+    visibility: visible;
+}
+
 /* mobile */
 @media (min-width: 0px) {
+
+    .left-nav.open {
+        width: 100%;
+    }
+
     .left-nav.open+.main {
         margin-left: 0;
+    }
+}
+
+/* desktop */
+@media (min-width: 576px) {
+    .left-nav.open {
+        width: 360px;
+
     }
 }
 
