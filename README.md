@@ -1,2 +1,4 @@
 # tunebook
-Tunes!
+A vanilla JS tunebook project
+
+https://fiddlejam.org/
