@@ -372,9 +372,9 @@ let tunes = [
             L:1/8
             R:jig
             K:Dmaj
-            |:FEF DED| D2d cAG|FEF FED|A2F GFE|
+            |:FEF DED| D2d cAG|FEF DED|A2F GFE|
             FEF DED|D2d cAG|FAF GBG|A2F GFE:|
-            D2d cAd| cAd cAG|FEF cAd|A2F GFE|
+            D2d cAd| cAd cAG|F2d cAG|F2F GFE|
             D2d cAd|fed cAG|FAF GBG|A2F GFE:|
         `,
         tags: ["irish"]
