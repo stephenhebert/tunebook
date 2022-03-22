@@ -17,26 +17,23 @@ export default {
       audioService: undefined,
     }
   },
+  mounted() {
+    this.getTunes()
+  },
   methods: {
-    parseTunesData() {
+    getTunes() {
       if (!this.tunesData) return
-      this.tunesData.forEach((tuneData) => {
-        const tune = this.TunesData_parseTuneData(tuneData)
-        tunes.push(tune)
+      Object.entries(this.tunesData).forEach((tuneFile) => {
+        const fileName = tuneFile[0]
+        const abc = tuneFile[1]
+        const tuneObj = {
+          ...this.TunesData_getMeta(abc),
+          fileName,
+          abc,
+        }
+        this.tunes.push(tuneObj)
       })
     },
   },
-  mounted() {
-    //
-    //this.parseTunesData();
-  },
-  watch: {
-    tunesData: {
-      immediate: true,
-      handler() {
-        this.parseTunesData();
-      }
-    }
-  }
 }
 </script>
