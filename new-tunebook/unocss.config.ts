@@ -3,7 +3,7 @@ import {
   presetAttributify,
   presetIcons,
   presetUno,
-  presetWebFonts,
+  // presetWebFonts,
   // transformerDirectives,
   // transformerVariantGroup,
 } from 'unocss'
@@ -19,15 +19,26 @@ export default defineConfig({
     presetIcons({
       scale: 1.2,
       warn: true,
-    }),
-    presetWebFonts({
-      fonts: {
-        sans: 'DM Sans',
-        serif: 'DM Serif Display',
-        mono: 'DM Mono',
+      extraProperties: {
+        'display': 'inline-block',
+        'vertical-align': 'middle',
+        // ...
       },
     }),
+    // presetWebFonts({
+    //   fonts: {
+    //     sans: 'DM Sans',
+    //     serif: 'DM Serif Display',
+    //     mono: 'DM Mono',
+    //   },
+    // }),
   ],
+  theme: {
+    fontFamily: {
+      serif: ['Source\\ Serif\\ 4', 'serif'],
+      sans: ['Open\\ Sans', 'sans-serif'],
+    },
+  },
   // transformers: [
   //   transformerDirectives(),
   //   transformerVariantGroup(),

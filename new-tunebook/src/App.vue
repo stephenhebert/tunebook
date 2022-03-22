@@ -1,4 +1,5 @@
 <template>
+  <TheTitleBar />
   <main font-sans p="x-4 y-10" text="center gray-700 dark:gray-200">
     <router-view />
     <Footer />
@@ -22,7 +23,8 @@ export default {
   },
   methods: {
     getTunes() {
-      if (!this.tunesData) return
+      if (!this.tunesData)
+        return
       Object.entries(this.tunesData).forEach((tuneFile) => {
         const fileName = tuneFile[0]
         const abc = tuneFile[1]
