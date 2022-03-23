@@ -35,8 +35,8 @@ export default defineConfig({
   ],
   theme: {
     fontFamily: {
-      serif: ['Source\\ Serif\\ 4', 'serif'],
-      sans: ['Open\\ Sans', 'sans-serif'],
+      serif: ['"Source Serif 4"', 'serif'],
+      sans: ['"Open Sans"', 'sans-serif'],
     },
   },
   // transformers: [

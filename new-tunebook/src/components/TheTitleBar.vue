@@ -1,7 +1,10 @@
 <template>
   <div class="title-bar border-b-4 border-gray-300 dark:border-gray-700 p-2 flex flex-row shadow items-center">
-    <button v-if="!isMenuVisible" class="i-mdi-menu text-xl mr-2" />
-    <button v-else class="i-mdi-close text-xl mr-2" />
+    <button
+      class="text-xl mr-2"
+      :class="{'i-mdi-menu': !isMenuOpen, 'i-mdi-close': isMenuOpen}"
+      @click="toggleNavMenu"
+    />
     <div class="font-serif text-xl">
       Steve's Fiddle Tunes 🎻🪕
     </div>
@@ -11,6 +14,10 @@
 <script>
 export default {
   name: 'TheTitleBar',
-  props: ['isMenuVisible'],
+  props: ['isMenuOpen'],
+  emits: ['toggle-nav-menu'],
+  methods: {
+    toggleNavMenu() { this.$emit('toggle-nav-menu') },
+  },
 }
 </script>
