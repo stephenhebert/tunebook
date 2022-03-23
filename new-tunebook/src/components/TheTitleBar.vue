@@ -8,10 +8,20 @@
     <div class="font-serif text-xl">
       Steve's Fiddle Tunes 🎻🪕
     </div>
+    <button class="icon-btn !outline-none ml-auto" @click="toggleDark()">
+      <div v-if="isDark" i-carbon-moon />
+      <div v-else i-carbon-sun />
+    </button>
   </div>
 </template>
 
+<script setup>
+import { isDark, toggleDark } from '~/composables'
+
+</script>
+
 <script>
+
 export default {
   name: 'TheTitleBar',
   props: ['isMenuOpen'],

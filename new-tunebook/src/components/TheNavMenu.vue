@@ -5,13 +5,27 @@
   >
     <!--  -->
     <div v-for="letter in tunesByLetter" :key="letter[0]">
-      <div>{{ letter[0] }}</div>
-      <div v-for="tune in letter[1]" :key="getFirstLetter(tune.title)">
-        {{ getValue(tune.title) }}
+      <div class="fw-semibold text-sm mb-4">
+        {{ letter[0] }}
+        <button
+          v-for="tune in letter[1]" :key="getFirstLetter(tune.title)"
+          class="text-lg font-serif block"
+          @click="go(tune.index)"
+        >
+          {{ getValue(tune.title) }}
+        </button>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+const router = useRouter()
+const go = (i) => {
+  if (i !== undefined)
+    router.push(`/tune/${i}`)
+}
+</script>
 
 <script>
 export default {

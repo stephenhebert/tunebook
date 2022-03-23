@@ -16,6 +16,11 @@ import TheNavMenu from './components/TheNavMenu.vue'
 export default {
   components: { TheNavMenu },
   mixins: [TunesDataMixin],
+  provide() {
+    return {
+      tunes: this.tunes,
+    }
+  },
   props: ['tunesData'],
   data() {
     return {
