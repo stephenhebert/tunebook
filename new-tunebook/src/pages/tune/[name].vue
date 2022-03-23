@@ -6,6 +6,11 @@ const props = defineProps<{ name: string }>()
 export default {
   name: 'Tune',
   inject: ['tunes'],
+  computed: {
+    tune() {
+      return this.tunes[this.name]
+    },
+  },
 }
 </script>
 
@@ -13,7 +18,7 @@ export default {
   <div>
     <div i-carbon-pedestrian text-4xl inline-block />
     <p>
-      Tune: {{ tunes[name].title.join('') }}
+      Tune: {{ tune.title.join('') }}
     </p>
     <p text-sm op50>
       <em>Dynamic route!</em>
