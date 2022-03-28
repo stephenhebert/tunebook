@@ -7,23 +7,38 @@
     <div v-for="letter in tunesByLetter" :key="letter[0]">
       <div class="fw-semibold text-sm mb-4">
         {{ letter[0] }}
-        <button
-          v-for="tune in letter[1]" :key="getFirstLetter(tune.title)"
-          class="text-lg font-serif block"
-          @click="go(tune.index)"
-        >
-          {{ getValue(tune.title) }}
-        </button>
+        <template v-for="tune in letter[1]" :key="getFirstLetter(tune.title)">
+          <button
+            class="text-lg font-serif block lt-lg:display-none "
+            @click="go(tune.index)"
+          >
+            {{ getValue(tune.title) }}
+          </button>
+          <button
+            class="text-lg font-serif block lg:display-none"
+            @click="goAndHide(tune.index)"
+          >
+            {{ getValue(tune.title) }}
+          </button>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useBus } from '~/composables/'
+const bus = useBus()
+const emit = defineEmits(['hide'])
 const router = useRouter()
 const go = (i) => {
+  bus.emit('logUserAction')
   if (i !== undefined)
     router.push(`/tune/${i}`)
+}
+const goAndHide = (i) => {
+  go(i)
+  emit('hide')
 }
 </script>
 

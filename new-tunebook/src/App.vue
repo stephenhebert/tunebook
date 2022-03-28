@@ -1,11 +1,11 @@
 <template>
   <TheTitleBar :is-menu-open="isNavMenuOpen" @toggle-nav-menu="isNavMenuOpen = !isNavMenuOpen" />
   <div class="position-relative h-100%">
-    <TheNavMenu :open="isNavMenuOpen" :tunes="tunes" />
+    <TheNavMenu :open="isNavMenuOpen" :tunes="tunes" @hide="isNavMenuOpen = false" />
     <main font-sans p="x-4 y-10" text="center gray-700 dark:gray-200 w-100%" :class="{'with-nav': isNavMenuOpen}">
       <router-view />
-      <Footer />
     </main>
+    <Footer />
   </div>
 </template>
 
@@ -19,15 +19,59 @@ export default {
   provide() {
     return {
       tunes: this.tunes,
+      context: this.context,
     }
   },
-  props: ['tunesData'],
+  props: ['tunesData', 'bus'],
   data() {
     return {
       tunes: [],
+      context: {
+        selectedTune: undefined,
+        renderedTune: undefined,
+        notationContainer: undefined,
+        browserSupportsAudio: true,
+        synthController: undefined,
+        userAction: false,
+        settings: {
+          transpose: 0,
+          tabs: false,
+          tempoPercent: 100,
+          enableChords: true,
+        },
+      },
       isNavMenuOpen: false,
       audioService: undefined,
     }
+  },
+  created() {
+    this.$bus.on('selectTune', (tune) => {
+      this.context.selectedTune = tune
+    })
+
+    this.$bus.on('setBrowserSupport', (bool) => {
+      this.context.browserSupportsAudio = bool
+    })
+
+    this.$bus.on('setRenderedTune', (tuneObj) => {
+      this.context.renderedTune = tuneObj
+    })
+
+    this.$bus.on('setNotationContainer', (el) => {
+      this.context.notationContainer = el
+    })
+
+    this.$bus.on('logUserAction', () => {
+      this.context.userAction = true
+    })
+
+    this.$bus.on('setSynthController', (instance) => {
+      this.context.synthController = instance
+    })
+
+    this.$bus.on('toggleChords', () => {
+      this.context.settings.enableChords = !this.context.settings.enableChords
+    })
   },
   mounted() {
     this.getTunes()
@@ -59,10 +103,10 @@ main {
 
   &.with-nav {
 
+    // TODO: replace with @apply?
     @media (min-width: none) {
       margin-left: 0;
     }
-
     @media (min-width: 992px) {
       margin-left: 360px;
     }

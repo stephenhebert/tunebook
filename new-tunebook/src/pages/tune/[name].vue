@@ -1,27 +1,29 @@
-<script setup lang="ts">
-const props = defineProps<{ name: string }>()
-</script>
-
 <script lang="ts">
 export default {
   name: 'Tune',
   inject: ['tunes'],
+  props: ['name'],
   computed: {
     tune() {
       return this.tunes[this.name]
+    },
+  },
+  watch: {
+    tune(tune) {
+      this.select(tune)
+    },
+  },
+  mounted() {
+    this.select(this.tune)
+  },
+  methods: {
+    select(tune) {
+      this.$bus.emit('selectTune', tune)
     },
   },
 }
 </script>
 
 <template>
-  <div>
-    <div i-carbon-pedestrian text-4xl inline-block />
-    <p>
-      Tune: {{ tune.title.join('') }}
-    </p>
-    <p text-sm op50>
-      <em>Dynamic route!</em>
-    </p>
-  </div>
+  <TuneDisplay />
 </template>

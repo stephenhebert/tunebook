@@ -38,6 +38,14 @@ export default defineConfig({
       serif: ['"Source Serif 4"', 'serif'],
       sans: ['"Open Sans"', 'sans-serif'],
     },
+    breakpoints: {
+      xs: '319.75px',
+      sm: '575.75px',
+      md: '767.75px',
+      lg: '991.75px',
+      xl: '1199.75px',
+      xxl: '1399.75px',
+    },
   },
   // transformers: [
   //   transformerDirectives(),

@@ -1,0 +1,20 @@
+- [x] main display - current state
+- [x] event bus
+- [x] play bar
+- [x] issues with tune choosing
+- [x] add tempo control
+- [ ] hanging indent in tune list
+- [ ] don't display tempo
+- [ ] show tab control
+- [ ] how did i get around the user gesture / audio context issue in the previous version??
+- [ ] change selected note color (svg fill)
+- [ ] highlight note with cursor control
+- [ ] read #tags from notes field 
+- [ ] change instrument to something less obnoxious than the piano
+- [ ] add chord control
+- [ ] add transpose control
+- [ ] main display updates
+  - [ ] custom title display
+  - [ ] key display
+
+- [ ] search / filter bar 

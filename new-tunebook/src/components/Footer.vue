@@ -1,21 +1,40 @@
-<script setup lang="ts">
-import { isDark, toggleDark } from '~/composables'
+<template>
+  <div v-if="context?.browserSupportsAudio" class="footer border-t-4 border-gray-300 dark:border-gray-700 shadow bg-hex-121212 color-white" :class="{ 'show': context?.renderedTune }">
+    <SynthController />
+  </div>
+</template>
+
+<script>
+import 'abcjs/abcjs-audio.css'
+
+export default {
+  name: 'Footer',
+  inject: ['context'],
+}
 </script>
 
-<template>
-  <nav text-xl mt-6 inline-flex gap-2>
-    <button class="icon-btn !outline-none" @click="toggleDark()">
-      <div v-if="isDark" i-carbon-moon />
-      <div v-else i-carbon-sun />
-    </button>
+<style scoped lang="scss">
+.footer {
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  padding: 5px 10px;
+  //background-color: #ccc;
 
-    <a
-      class="icon-btn"
-      i-carbon-logo-github
-      rel="noreferrer"
-      href="https://github.com/antfu/vitesse-lite"
-      target="_blank"
-      title="GitHub"
-    />
-  </nav>
-</template>
+  transition-timing-function: ease-in-out;
+  transition-duration: .3s;
+  transition-property: margin-bottom;
+
+  &.show {
+    margin-bottom: 0;
+  }
+
+  &:not(.show) {
+    margin-bottom: -40px;
+  }
+
+}
+</style>
