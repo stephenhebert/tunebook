@@ -3,6 +3,7 @@
 - [x] play bar
 - [x] issues with tune choosing
 - [x] add tempo control
+- [ ] highlight selected tune in sidebar
 - [ ] hanging indent in tune list
 - [ ] don't display tempo
 - [ ] show tab control
