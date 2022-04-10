@@ -66,10 +66,6 @@ export default {
       this.context.notationContainer = el
     })
 
-    this.$bus.on('logUserAction', () => {
-      this.context.userAction = true
-    })
-
     this.$bus.on('setSynthController', (instance) => {
       this.context.synthController = instance
     })

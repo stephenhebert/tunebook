@@ -4,16 +4,22 @@
 - [x] issues with tune choosing
 - [x] add tempo control
 - [x] javascript error loading from start
-- [ ] highlight selected tune in sidebar
-- [ ] hanging indent in tune list
-- [ ] don't display tempo
-- [ ] show tab control
 - [x] how did i get around the user gesture / audio context issue in the previous version??
-- [ ] change selected note color (svg fill)
-- [ ] highlight note with cursor control
-- [ ] read #tags from notes field 
+- [x] change selected note color (svg fill)
+- [x] highlight note with cursor control
+- [x] add chord control
+- [x] highlight selected tune in sidebar
+- [x] transform ABC 
+  - [x] don't display tempo
+  - [x] don't display key
+  - [x] don't display title
+  - [x] don't display notes 
+- [ ] hanging indent in tune list
+- [ ] fix chord control -- checkbox and reset audio
 - [ ] change instrument to something less obnoxious than the piano
-- [ ] add chord control
+- [ ] show tab control
+- [ ] select note to scroll to audio // click listener
+- [ ] read #tags from notes field 
 - [ ] add transpose control
 - [ ] main display updates
   - [ ] custom title display

@@ -10,12 +10,14 @@
         <template v-for="tune in letter[1]" :key="getFirstLetter(tune.title)">
           <button
             class="text-lg font-serif block lt-lg:display-none "
+            :class="{'selected': tune.fileName === selectedTune.fileName }"
             @click="go(tune.index)"
           >
             {{ getValue(tune.title) }}
           </button>
           <button
             class="text-lg font-serif block lg:display-none"
+            :class="{'selected': tune.fileName === selectedTune.fileName }"
             @click="goAndHide(tune.index)"
           >
             {{ getValue(tune.title) }}
@@ -28,11 +30,10 @@
 
 <script setup>
 import { useBus } from '~/composables/'
-const bus = useBus()
+// const bus = useBus()
 const emit = defineEmits(['hide'])
 const router = useRouter()
 const go = (i) => {
-  bus.emit('logUserAction')
   if (i !== undefined)
     router.push(`/tune/${i}`)
 }
@@ -59,6 +60,9 @@ export default {
           return obj
         }, {})
       return Object.entries(tunes)
+    },
+    selectedTune() {
+      return this.context?.selectedTune
     },
   },
   methods: {
@@ -97,6 +101,10 @@ export default {
     left: -360px;
     width: 0;
     visibility: hidden;
+  }
+
+  .selected {
+    color: #0a9ecc;
   }
 
 }

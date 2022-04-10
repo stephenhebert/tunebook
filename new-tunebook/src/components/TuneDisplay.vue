@@ -45,7 +45,7 @@ export default {
       this.$bus.emit('setRenderedTune', renderedTune)
     },
     transformAbc(abc) {
-      const keysToHide = ['title', 'type']
+      const keysToHide = ['title', 'type', 'quantize', 'notes']
       const regexesToReplace = this.TuneData_getMetaFieldRegexesByKeys(...keysToHide)
       regexesToReplace.forEach((regex) => {
         abc = abc.replace(regex, '').replace('\n\n', '\n')

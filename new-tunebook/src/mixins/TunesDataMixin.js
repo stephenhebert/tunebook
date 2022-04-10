@@ -18,7 +18,7 @@ export default {
     TunesData_getMetaFieldRegex(field) {
     //     const textFieldRegexString = `^${tf.identifier}: *(.*)$\\n`
     //     const textFieldRegex = new RegExp(textFieldRegexString, 'gm')
-      return new RegExp(`^${field.identifier}: ?([\\w\\d/ ]*)$`, 'm')
+      return new RegExp(`^${field.identifier}: ?([\\w\\d=/ ]*)$`, 'm')
     },
     TuneData_getMetaFieldRegexesByKeys(...args) {
       return args.map(arg => this.TunesData_getMetaFieldRegex(metaFields.filter(field => field.key === arg)[0]))
