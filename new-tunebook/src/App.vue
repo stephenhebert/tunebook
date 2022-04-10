@@ -44,6 +44,11 @@ export default {
       audioService: undefined,
     }
   },
+  computed: {
+    isFooterShown() {
+      return !!this.context.renderedTune
+    },
+  },
   created() {
     this.$bus.on('selectTune', (tune) => {
       this.context.selectedTune = tune

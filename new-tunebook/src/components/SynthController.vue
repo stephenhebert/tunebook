@@ -1,6 +1,6 @@
 <template>
   <div class="synth-controller flex flex-row">
-    <div ref="audio" class="synth-controller flex-grow" @click="logUserAction" />
+    <div ref="audio" class="synth-controller flex-grow" />
     <div class="flex items-center">
       <!--  -->
       <label class="text-xs mx-1">Play Chords</label><input v-model="playChords" type="checkbox" @click.prevent="toggleChords">
@@ -32,7 +32,6 @@ export default {
   },
   computed: {
     renderedTune() { return this.context?.renderedTune },
-    userAction() { return this.context?.userAction },
     playChords() { return this.context?.settings?.enableChords },
   },
   watch: {
@@ -42,28 +41,23 @@ export default {
     playChords() {
       this.load()
     },
-    userAction(bool) {
-      if (bool === true) this.initOnUserAction()
-    },
   },
   mounted() {
-    this.initBeforeUserAction()
+    // this.initBeforeUserAction()
     this.$bus.emit('setSynthController', this)
     // this.setBrowserSupport()
     // this.initializeSynth()
   },
   methods: {
     load() {
-      if (!this.synthControl) this.initBeforeUserAction()
-      if (this.userAction) this.initOnUserAction()
+      // if (!this.synthControl) this.initBeforeUserAction()
+      // if (this.userAction) this.initOnUserAction()
+      this.init()
     },
     setBrowserSupport() {
       this.$bus.emit('setBrowserSupport', abcjs.synth.supportsAudio())
     },
-    logUserAction() {
-      this.$bus.emit('logUserAction')
-    },
-    initBeforeUserAction() {
+    init() {
       // this function does not require user gesture to start
       window.AudioContext = window.AudioContext
         || window.webkitAudioContext
@@ -74,8 +68,7 @@ export default {
 
       this.synthControl.load(this.$refs.audio, null, controlOptions)
       // this.synthControl.disable(true)
-    },
-    initOnUserAction() {
+
       this.setBrowserSupport()
       this.audioContext = new window.AudioContext()
       const tune = { ...this.renderedTune[0] }
@@ -90,7 +83,9 @@ export default {
 
         },
       }).then(() => {
-        this.synthControl.setTune(tune, true)
+        this.synthControl.setTune(tune).then(() => {
+          console.log('Audio successfully loaded')
+        })
       })
     },
     toggleChords() {

@@ -3,11 +3,12 @@
 - [x] play bar
 - [x] issues with tune choosing
 - [x] add tempo control
+- [x] javascript error loading from start
 - [ ] highlight selected tune in sidebar
 - [ ] hanging indent in tune list
 - [ ] don't display tempo
 - [ ] show tab control
-- [ ] how did i get around the user gesture / audio context issue in the previous version??
+- [x] how did i get around the user gesture / audio context issue in the previous version??
 - [ ] change selected note color (svg fill)
 - [ ] highlight note with cursor control
 - [ ] read #tags from notes field 

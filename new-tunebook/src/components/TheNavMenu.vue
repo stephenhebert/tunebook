@@ -1,7 +1,7 @@
 <template>
   <div
-    class="the-nav-menu h-100% border-r-4 border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-hex-121212 z-1000"
-    :class="{'open': open, 'closed': !open}"
+    class="the-nav-menu mb-0 border-r-4 border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-hex-121212 z-1000 bottom-0"
+    :class="{'open': open, 'closed': !open, '!bottom-42px': open && !!context.renderedTune }"
   >
     <!--  -->
     <div v-for="letter in tunesByLetter" :key="letter[0]">
@@ -45,6 +45,7 @@ const goAndHide = (i) => {
 <script>
 export default {
   name: 'TheNavMenu',
+  inject: ['context'],
   props: ['open', 'tunes'],
   computed: {
     tunesByLetter() {
@@ -79,10 +80,16 @@ export default {
   transition-property: left, width, visibility, bottom;
   position: fixed;
   width: 360px;
+  top: 50px;
 
   &.open {
     left: 0;
     visibility: visible;
+
+    // & ~ :global(.footer.show) {
+    //   bottom: 42px;
+    // }
+
   }
 
   &.closed {
@@ -93,5 +100,9 @@ export default {
   }
 
 }
+
+// :global(.footer.show) ~ .the-nav-menu.open {
+//   bottom: 42px;
+// }
 
 </style>
