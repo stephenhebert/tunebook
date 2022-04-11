@@ -17,20 +17,21 @@
 - [ ] hanging indent in tune list
 - [x] change instrument to something less obnoxious than the piano
 - [x] select note to scroll to audio // click listener
-- [ ] on play new audio, clean up all old audio
+- [x] on play new audio, clean up all old audio
 - [ ] read #tags from notes field 
 - [ ] main display updates
   - [ ] custom title display
   - [ ] key display
 - [ ] Controls 
-  - [ ] fix chord control -- 
+  - [x] fix chord control -- 
     - [x] checkbox
-    - [ ] reset audio
+    - [x] reset audio
   - [ ] tablature
   - [x] instrument?
   - [ ] transpose
   - [x] dropdown menu for other options
 - [ ] fix abc tempo -- remove it from display, but still have it affect the midi... maybe render midi separately? 
+- [ ] fix abc parse for fiddler's welcome
 
 - [ ] search / filter bar 
 
