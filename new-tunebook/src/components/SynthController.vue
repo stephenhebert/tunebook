@@ -108,6 +108,12 @@ export default {
     },
     init(userAction = false) {
       return new Promise((resolve) => {
+        console.log('on init: ')
+        console.log(`synthControl: ${this.synthControl}`)
+        console.log(`synthControl.midiBuffer: ${this.synthControl?.midiBuffer}`)
+        console.log(`midiBuffer: ${this.midiBuffer}`)
+        console.log(`audioContext: ${this.audioContext}`)
+
         // this function does not require user gesture to start
         window.AudioContext
           = window.AudioContext
