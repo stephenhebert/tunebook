@@ -1,12 +1,7 @@
 <template>
   <div class="synth-controller flex flex-row">
     <div ref="audio" class="synth-controller flex-grow" />
-    <div class="flex items-center">
-      <!--  -->
-      <label class="text-xs mx-1">Play Chords</label>
-      <div v-if="!playChords" class="i-tabler-square" @click="toggleChords" />
-      <div v-else class="i-tabler-square-check" @click="toggleChords" />
-    </div>
+    <OptionsMenu />
   </div>
 </template>
 
@@ -20,6 +15,14 @@ const controlOptions = {
   displayProgress: true,
   displayWarp: true,
   displayClock: true,
+}
+
+const INSTRUMENTS = {
+  PIANO: 0,
+  ACCORDION: 21,
+  FLUTE: 73,
+  BANJO: 105,
+  FIDDLE: 110,
 }
 
 function CursorControl() {
@@ -62,15 +65,15 @@ export default {
     renderedTune() {
       return this.context?.renderedTune
     },
-    playChords() {
-      return this.context?.settings?.enableChords
+    instrument() {
+      return this.context?.settings?.instrument
     },
   },
   watch: {
     renderedTune() {
       this.init()
     },
-    playChords() {
+    instrument() {
       this.init()
     },
   },
@@ -84,14 +87,13 @@ export default {
 
     this.$bus.on('seek', async(milliseconds) => {
       console.log('seek')
-      // let timer = this.synthControl.timer
-      // if (!timer) {
+      console.log(milliseconds)
       await this.init(true)
       const timer = this.synthControl.timer
-      // }
       const totalMilliseconds = timer.lastMoment
-      const percent = milliseconds / totalMilliseconds
-      this.synthControl.midiBuffer.stop()
+      const percent = milliseconds[0] / totalMilliseconds
+      // const percent = milliseconds[0] / milliseconds[1]
+      // this.synthControl.midiBuffer.stop()
       this.synthControl.setProgress(percent)
       this.synthControl.midiBuffer.seek(percent)
       this.synthControl.play()
@@ -125,11 +127,12 @@ export default {
         if (!this.renderedTune) return
         const tune = { ...this.renderedTune[0] }
         if (!tune) return
+        // if (this.synthControl?.midiBuffer)
+        //   this.synthControl.midiBuffer.stop()
         if (this.midiBuffer)
           this.midiBuffer.stop()
-          // this.synthControl.midiBuffer.stop()
-
-        else this.midiBuffer = new abcjs.synth.CreateSynth()
+        else
+          this.midiBuffer = new abcjs.synth.CreateSynth()
         this.midiBuffer
           .init({
             visualObj: tune,
@@ -146,7 +149,7 @@ export default {
               // 73 - flute
               // 105 - banjo
               // 110 - fiddle
-              program: 110,
+              program: INSTRUMENTS[this.instrument],
             }).then(() => {
               // console.log('Audio successfully loaded')
               resolve()
@@ -154,13 +157,8 @@ export default {
           })
       })
     },
-    toggleChords() {
-      this.$bus.emit('toggleChords')
-    },
   },
 }
-// TODO: Pass cursor control
-// TODO: click note and jump to point in audio
 
 // var visualOptions = {  };
 // var visualObj = abcjs.renderAbc("paper", abcString, visualOptions);

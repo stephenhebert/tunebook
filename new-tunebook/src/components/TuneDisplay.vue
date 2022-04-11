@@ -57,9 +57,7 @@ export default {
       return abc
     },
     seekTo(abcElem) {
-      // console.log(abcElem)
       const currentMilliseconds = abcElem.currentTrackMilliseconds
-      // const seekToSeconds = currentMilliseconds / 1000
       this.$bus.emit('seek', currentMilliseconds)
     },
   },

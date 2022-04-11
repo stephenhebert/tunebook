@@ -27,8 +27,13 @@
     - [x] checkbox
     - [ ] reset audio
   - [ ] tablature
-  - [ ] instrument?
+  - [x] instrument?
   - [ ] transpose
-  - [ ] dropdown menu for other options
+  - [x] dropdown menu for other options
+- [ ] fix abc tempo -- remove it from display, but still have it affect the midi... maybe render midi separately? 
 
 - [ ] search / filter bar 
+
+// https://abcnotation.com/wiki/abc:standard:v2.1
+// durationInMeasures
+// see full synth example: https://raw.githubusercontent.com/paulrosen/abcjs/main/examples/full-synth.html

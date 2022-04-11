@@ -38,6 +38,8 @@ export default {
           tabs: false,
           tempoPercent: 100,
           enableChords: true,
+          showTabs: false,
+          instrument: 'FIDDLE',
         },
       },
       isNavMenuOpen: false,
@@ -72,6 +74,14 @@ export default {
 
     this.$bus.on('toggleChords', () => {
       this.context.settings.enableChords = !this.context.settings.enableChords
+    })
+
+    this.$bus.on('toggleTabs', () => {
+      this.context.settings.showTabs = !this.context.settings.showTabs
+    })
+
+    this.$bus.on('setInstrument', (instrument) => {
+      this.context.settings.instrument = instrument
     })
   },
   mounted() {
