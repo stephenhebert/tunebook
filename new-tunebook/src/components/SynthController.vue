@@ -87,7 +87,6 @@ export default {
 
     this.$bus.on('seek', async(milliseconds) => {
       console.log('seek')
-      console.log(milliseconds)
       await this.init(true)
       const timer = this.synthControl.timer
       const totalMilliseconds = timer.lastMoment
