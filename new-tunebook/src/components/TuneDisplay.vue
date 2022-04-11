@@ -31,6 +31,9 @@ export default {
   mounted() {
     this.renderTune()
     this.$bus.emit('setNotationContainer', this.$refs.render)
+
+    // for (let i = 0; i < 129; i++)
+    //   console.log(`${i}: ${abcjs.synth.instrumentIndexToName[i]}`)
   },
   methods: {
     renderTune() {
@@ -39,6 +42,7 @@ export default {
         add_classes: true,
         responsive: 'resize',
         // click listener
+        clickListener: this.seekTo,
         // visual transpose
         visualTranspose: this?.context?.settings?.transpose,
       })
@@ -51,6 +55,12 @@ export default {
         abc = abc.replace(regex, '').replace('\n\n', '\n')
       })
       return abc
+    },
+    seekTo(abcElem) {
+      // console.log(abcElem)
+      const currentMilliseconds = abcElem.currentTrackMilliseconds
+      // const seekToSeconds = currentMilliseconds / 1000
+      this.$bus.emit('seek', currentMilliseconds)
     },
   },
 }

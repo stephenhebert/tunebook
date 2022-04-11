@@ -1,7 +1,7 @@
 <template>
   <div
     class="the-nav-menu mb-0 border-r-4 border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-hex-121212 z-1000 bottom-0"
-    :class="{'open': open, 'closed': !open, '!bottom-42px': open && !!context.renderedTune }"
+    :class="{'open': open, 'closed': !open, '!bottom-42px': !!context.renderedTune }"
   >
     <!--  -->
     <div v-for="letter in tunesByLetter" :key="letter[0]">
@@ -10,14 +10,14 @@
         <template v-for="tune in letter[1]" :key="getFirstLetter(tune.title)">
           <button
             class="text-lg font-serif block lt-lg:display-none "
-            :class="{'selected': tune.fileName === selectedTune.fileName }"
+            :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="go(tune.index)"
           >
             {{ getValue(tune.title) }}
           </button>
           <button
             class="text-lg font-serif block lg:display-none"
-            :class="{'selected': tune.fileName === selectedTune.fileName }"
+            :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="goAndHide(tune.index)"
           >
             {{ getValue(tune.title) }}

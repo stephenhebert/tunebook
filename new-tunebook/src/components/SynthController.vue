@@ -3,11 +3,9 @@
     <div ref="audio" class="synth-controller flex-grow" />
     <div class="flex items-center">
       <!--  -->
-      <label class="text-xs mx-1">Play Chords</label><input
-        type="checkbox"
-        :checked="playChords"
-        @click.prevent="toggleChords"
-      >
+      <label class="text-xs mx-1">Play Chords</label>
+      <div v-if="!playChords" class="i-tabler-square" @click="toggleChords" />
+      <div v-else class="i-tabler-square-check" @click="toggleChords" />
     </div>
   </div>
 </template>
@@ -70,64 +68,91 @@ export default {
   },
   watch: {
     renderedTune() {
-      this.load()
+      this.init()
     },
     playChords() {
-      this.load()
+      this.init()
     },
   },
   mounted() {
     // this.initBeforeUserAction()
     this.$bus.emit('setSynthController', this)
 
-    this.load()
+    this.init()
     // this.setBrowserSupport()
     // this.initializeSynth()
+
+    this.$bus.on('seek', async(milliseconds) => {
+      console.log('seek')
+      // let timer = this.synthControl.timer
+      // if (!timer) {
+      await this.init(true)
+      const timer = this.synthControl.timer
+      // }
+      const totalMilliseconds = timer.lastMoment
+      const percent = milliseconds / totalMilliseconds
+      this.synthControl.midiBuffer.stop()
+      this.synthControl.setProgress(percent)
+      this.synthControl.midiBuffer.seek(percent)
+      this.synthControl.play()
+      // this.midiBuffer.seek(percent)
+      // this.midiBuffer.seek(seconds, 'seconds')
+      // this.synthController.
+      // console.log(this.context.synthController)
+    })
   },
   methods: {
-    load() {
-      // if (!this.synthControl) this.initBeforeUserAction()
-      // if (this.userAction) this.initOnUserAction()
-      this.init()
-    },
     setBrowserSupport() {
       this.$bus.emit('setBrowserSupport', abcjs.synth.supportsAudio())
     },
-    init() {
-      // this function does not require user gesture to start
-      window.AudioContext
-        = window.AudioContext
-        || window.webkitAudioContext
-        || navigator.mozAudioContext
-        || navigator.msAudioContext
+    init(userAction = false) {
+      return new Promise((resolve) => {
+        // this function does not require user gesture to start
+        window.AudioContext
+          = window.AudioContext
+          || window.webkitAudioContext
+          || navigator.mozAudioContext
+          || navigator.msAudioContext
 
-      this.synthControl = new abcjs.synth.SynthController()
+        // if (!this.synthControl) {
+        this.synthControl = new abcjs.synth.SynthController()
+        this.synthControl.load(this.$refs.audio, this.cursorControl, controlOptions)
+        // }
+        // this.synthControl.disable(true)
 
-      this.synthControl.load(this.$refs.audio, this.cursorControl, controlOptions)
-      // this.synthControl.disable(true)
+        this.setBrowserSupport()
+        this.audioContext = abcjs.synth.activeAudioContext() || new window.AudioContext()
+        if (!this.renderedTune) return
+        const tune = { ...this.renderedTune[0] }
+        if (!tune) return
+        if (this.midiBuffer)
+          this.midiBuffer.stop()
+          // this.synthControl.midiBuffer.stop()
 
-      this.setBrowserSupport()
-      this.audioContext = abcjs.synth.activeAudioContext() || new window.AudioContext()
-      if (!this.renderedTune) return
-      const tune = { ...this.renderedTune[0] }
-      if (!tune) return
-      if (this.midiBuffer) this.midiBuffer.stop()
-      else this.midiBuffer = new abcjs.synth.CreateSynth()
-      this.midiBuffer
-        .init({
-          visualObj: tune,
-          millisecondsPerMeasure: 800,
-        })
-        .then(() => {
-          this.synthControl.setTune(tune, undefined, {
-            chordsOff: this.context?.settings?.enableChords,
-            options: {
-              program: 34,
-            },
-          }).then(() => {
-            console.log('Audio successfully loaded')
+        else this.midiBuffer = new abcjs.synth.CreateSynth()
+        this.midiBuffer
+          .init({
+            visualObj: tune,
+            // millisecondsPerMeasure: 800,
           })
-        })
+          .then(() => {
+            this.synthControl.setTune(tune, userAction, {
+              chordsOff: this.context?.settings?.enableChords,
+              // options: {
+              //   program: 34,
+              // },
+              // 0 - piano
+              // 21 - accordion
+              // 73 - flute
+              // 105 - banjo
+              // 110 - fiddle
+              program: 110,
+            }).then(() => {
+              // console.log('Audio successfully loaded')
+              resolve()
+            })
+          })
+      })
     },
     toggleChords() {
       this.$bus.emit('toggleChords')

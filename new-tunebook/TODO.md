@@ -15,14 +15,20 @@
   - [x] don't display title
   - [x] don't display notes 
 - [ ] hanging indent in tune list
-- [ ] fix chord control -- checkbox and reset audio
-- [ ] change instrument to something less obnoxious than the piano
-- [ ] show tab control
-- [ ] select note to scroll to audio // click listener
+- [x] change instrument to something less obnoxious than the piano
+- [x] select note to scroll to audio // click listener
+- [ ] on play new audio, clean up all old audio
 - [ ] read #tags from notes field 
-- [ ] add transpose control
 - [ ] main display updates
   - [ ] custom title display
   - [ ] key display
+- [ ] Controls 
+  - [ ] fix chord control -- 
+    - [x] checkbox
+    - [ ] reset audio
+  - [ ] tablature
+  - [ ] instrument?
+  - [ ] transpose
+  - [ ] dropdown menu for other options
 
 - [ ] search / filter bar 
