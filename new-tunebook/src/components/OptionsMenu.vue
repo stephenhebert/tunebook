@@ -26,7 +26,7 @@
       </MenuItem>
       <MenuItem as="template">
         <div class="mt-2 text-xs">
-          Instrument
+          Lead Instrument
           <div class="p-2 rounded border-1">
             <button class="flex items-center" @click="setInstrument('FIDDLE')">
               <div v-if="instrument === 'FIDDLE'" class="i-tabler-circle-dot" />

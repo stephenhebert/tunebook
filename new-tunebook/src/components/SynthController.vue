@@ -79,13 +79,13 @@ export default {
   },
   watch: {
     renderedTune() {
-      this.init()
+      this.init(true)
     },
     instrument() {
-      this.init()
+      this.init(true)
     },
     enableChords() {
-      this.init()
+      this.init(true)
     },
   },
   mounted() {

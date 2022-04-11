@@ -76,5 +76,9 @@ export default {
     fill: inherit;
   }
 
+  :deep(.abcjs-staff) {
+    opacity: .3;
+  }
+
 }
 </style>
