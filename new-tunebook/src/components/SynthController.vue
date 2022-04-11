@@ -59,6 +59,11 @@ export default {
       midiBuffer: undefined,
       audioContext: undefined,
       cursorControl: new CursorControl(),
+      oldBuffers: {
+        synthControl: [],
+        midiBuffer: [],
+        audioContext: [],
+      },
     }
   },
   computed: {
@@ -68,12 +73,18 @@ export default {
     instrument() {
       return this.context?.settings?.instrument
     },
+    enableChords() {
+      return this.context?.settings?.enableChords
+    },
   },
   watch: {
     renderedTune() {
       this.init()
     },
     instrument() {
+      this.init()
+    },
+    enableChords() {
       this.init()
     },
   },
@@ -108,11 +119,7 @@ export default {
     },
     init(userAction = false) {
       return new Promise((resolve) => {
-        console.log('on init: ')
-        console.log(`synthControl: ${this.synthControl}`)
-        console.log(`synthControl.midiBuffer: ${this.synthControl?.midiBuffer}`)
-        console.log(`midiBuffer: ${this.midiBuffer}`)
-        console.log(`audioContext: ${this.audioContext}`)
+        if (this.synthControl) this.synthControl.pause()
 
         // this function does not require user gesture to start
         window.AudioContext
@@ -145,15 +152,7 @@ export default {
           })
           .then(() => {
             this.synthControl.setTune(tune, userAction, {
-              chordsOff: this.context?.settings?.enableChords,
-              // options: {
-              //   program: 34,
-              // },
-              // 0 - piano
-              // 21 - accordion
-              // 73 - flute
-              // 105 - banjo
-              // 110 - fiddle
+              chordsOff: !this.context?.settings?.enableChords,
               program: INSTRUMENTS[this.instrument],
             }).then(() => {
               // console.log('Audio successfully loaded')
