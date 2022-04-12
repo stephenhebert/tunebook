@@ -14,7 +14,7 @@
   - [x] don't display key
   - [x] don't display title
   - [x] don't display notes 
-- [ ] hanging indent in tune list
+- [x] hanging indent in tune list
 - [x] change instrument to something less obnoxious than the piano
 - [x] select note to scroll to audio // click listener
 - [x] on play new audio, clean up all old audio
@@ -22,16 +22,21 @@
 - [ ] main display updates
   - [ ] custom title display
   - [ ] key display
+    - [ ] with transpose display
 - [ ] Controls 
   - [x] fix chord control -- 
     - [x] checkbox
     - [x] reset audio
-  - [ ] tablature
   - [x] instrument?
-  - [ ] transpose
+  - [x] transpose
   - [x] dropdown menu for other options
+  - [ ] tablature
+  - [ ] store/load settings in query string
+- [x] fix abc parse for fiddler's welcome
 - [ ] fix abc tempo -- remove it from display, but still have it affect the midi... maybe render midi separately? 
-- [ ] fix abc parse for fiddler's welcome
+- [ ] fix tunes with the same name, show variations (eg, [1] [2] [3])
+- [ ] tablature is getting cut off ... increase svg viewbox and padding-bottom of .abcjs-container
+- [ ] seek resets warp... fix seek with warp ... observe progress bar functionality 
 
 - [ ] search / filter bar 
 

@@ -7,16 +7,16 @@
     <div v-for="letter in tunesByLetter" :key="letter[0]">
       <div class="fw-semibold text-sm mb-4">
         {{ letter[0] }}
-        <template v-for="tune in letter[1]" :key="getFirstLetter(tune.title)">
+        <template v-for="tune in letter[1]">
           <button
-            class="text-lg font-serif block lt-lg:display-none "
+            class="tune-title text-lg font-serif block lt-lg:display-none text-left"
             :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="go(tune.index)"
           >
             {{ getValue(tune.title) }}
           </button>
           <button
-            class="text-lg font-serif block lg:display-none"
+            class="tune-title text-lg font-serif block lg:display-none text-left"
             :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="goAndHide(tune.index)"
           >
@@ -52,11 +52,12 @@ export default {
     tunesByLetter() {
       let tunes = [...this.tunes]
       tunes = tunes
+        .map((tune, i) => ({ ...tune, index: i }))
         .sort((a, b) => a.title.join('').localeCompare(b.title.join('')))
         .reduce((obj, curr, i) => {
           const firstLetter = this.getFirstLetter(curr.title)
           if (!obj[firstLetter]) obj[firstLetter] = []
-          obj[firstLetter].push({ ...curr, index: i })
+          obj[firstLetter].push(curr)
           return obj
         }, {})
       return Object.entries(tunes)
@@ -90,27 +91,23 @@ export default {
     left: 0;
     visibility: visible;
 
-    // & ~ :global(.footer.show) {
-    //   bottom: 42px;
-    // }
-
   }
 
   &.closed {
-    //left: -18.75rem;
     left: -360px;
     width: 0;
     visibility: hidden;
   }
 
-  .selected {
-    color: #0a9ecc;
+  .tune-title {
+    text-indent: -1rem;
+    padding-left: 1rem;
+
+    &.selected {
+      color: #0a9ecc;
+    }
   }
 
 }
-
-// :global(.footer.show) ~ .the-nav-menu.open {
-//   bottom: 42px;
-// }
 
 </style>

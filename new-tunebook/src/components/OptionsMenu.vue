@@ -14,7 +14,6 @@
           <label class="mx-1 text-xs">Play Chords</label>
         </div>
       </MenuItem>
-      <!-- Instrument -->
       <!-- Tablature -->
       <MenuItem @click="toggleTabs">
         <div class="flex items-center">
@@ -24,6 +23,7 @@
           <label class="mx-1 text-xs">Show Tabs</label>
         </div>
       </MenuItem>
+      <!-- Instrument -->
       <MenuItem as="template">
         <div class="mt-2 text-xs">
           Lead Instrument
@@ -56,6 +56,13 @@
           </div>
         </div>
       </MenuItem>
+      <!-- Transpose -->
+      <MenuItem as="template">
+        <div class="flex items-center text-xs mt-2">
+          <label class="">Transpose</label>
+          <input v-model="transpose" type="number" max="12" min="-12" class="ms-auto rounded w-48px p-2px ps-6px border-1 bg-transparent">
+        </div>
+      </MenuItem>
     </MenuItems>
   </Menu>
 </template>
@@ -70,12 +77,18 @@ export default {
   data() {
     return {
       open: false,
+      transpose: 0,
     }
   },
   computed: {
     playChords() { return !!this.context?.settings?.enableChords },
     showTabs() { return !!this.context?.settings?.showTabs },
     instrument() { return this.context?.settings?.instrument },
+  },
+  watch: {
+    transpose(val) {
+      this.$bus.emit('setTranspose', val)
+    },
   },
   methods: {
     toggleChords() {

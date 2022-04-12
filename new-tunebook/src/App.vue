@@ -83,6 +83,10 @@ export default {
     this.$bus.on('setInstrument', (instrument) => {
       this.context.settings.instrument = instrument
     })
+
+    this.$bus.on('setTranspose', (val) => {
+      this.context.settings.transpose = val
+    })
   },
   mounted() {
     this.getTunes()

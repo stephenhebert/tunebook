@@ -15,13 +15,16 @@ export default {
       }, {})
       return metaObj
     },
+    TunesData_getMetaFieldRegexInnerString(field) {
+      return `${field.identifier}: ?([\\w\\d=,':#/\\. ]*)`
+    },
     TunesData_getMetaFieldRegex(field) {
     //     const textFieldRegexString = `^${tf.identifier}: *(.*)$\\n`
     //     const textFieldRegex = new RegExp(textFieldRegexString, 'gm')
-      return new RegExp(`^${field.identifier}: ?([\\w\\d=,'/ ]*)$`, 'm')
+      return new RegExp(`^${this.TunesData_getMetaFieldRegexInnerString(field)}$`, 'm')
     },
-    TuneData_getMetaFieldRegexesByKeys(...args) {
-      return args.map(arg => this.TunesData_getMetaFieldRegex(metaFields.filter(field => field.key === arg)[0]))
+    TuneData_getMetaFieldRegexStringsByKeys(...args) {
+      return args.map(arg => this.TunesData_getMetaFieldRegexInnerString(metaFields.filter(field => field.key === arg)[0]))
     },
   },
 }

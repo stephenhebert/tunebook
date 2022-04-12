@@ -97,20 +97,14 @@ export default {
     // this.initializeSynth()
 
     this.$bus.on('seek', async(milliseconds) => {
-      console.log('seek')
+      const offset = Array.isArray(milliseconds) ? milliseconds[0] : milliseconds
       await this.init(true)
       const timer = this.synthControl.timer
       const totalMilliseconds = timer.lastMoment
-      const percent = milliseconds[0] / totalMilliseconds
-      // const percent = milliseconds[0] / milliseconds[1]
-      // this.synthControl.midiBuffer.stop()
+      const percent = offset / totalMilliseconds
       this.synthControl.setProgress(percent)
       this.synthControl.midiBuffer.seek(percent)
       this.synthControl.play()
-      // this.midiBuffer.seek(percent)
-      // this.midiBuffer.seek(seconds, 'seconds')
-      // this.synthController.
-      // console.log(this.context.synthController)
     })
   },
   methods: {
@@ -120,6 +114,11 @@ export default {
     init(userAction = false) {
       return new Promise((resolve) => {
         if (this.synthControl) this.synthControl.pause()
+
+        // save warp
+        let warp = 100
+        const warpInput = document.querySelector('.abcjs-midi-tempo')
+        if (warpInput) warp = warpInput.value
 
         // this function does not require user gesture to start
         window.AudioContext
@@ -152,9 +151,11 @@ export default {
           })
           .then(() => {
             this.synthControl.setTune(tune, userAction, {
-              chordsOff: !this.context?.settings?.enableChords,
+              chordsOff: !this.enableChords,
+              // midiTranspose: this.context?.settings?.transpose,
               program: INSTRUMENTS[this.instrument],
             }).then(() => {
+              // if (warp !== 100) await this.synthControl.setWarp(warp)
               // console.log('Audio successfully loaded')
               resolve()
             })
@@ -163,42 +164,6 @@ export default {
     },
   },
 }
-
-// var visualOptions = {  };
-// var visualObj = abcjs.renderAbc("paper", abcString, visualOptions);
-
-// document.querySelector(".activate-audio").addEventListener("click", activate);
-// function activate() {
-//     if (abcjs.synth.supportsAudio()) {
-//         var controlOptions = {
-//             displayLoop: true,
-//             displayRestart: true,
-//             displayPlay: true,
-//             displayProgress: true,
-//             displayWarp: true,
-//             displayClock: true
-//         };
-//         var synthControl = new abcjs.synth.SynthController();
-//         synthControl.load("#audio", null, controlOptions);
-//         synthControl.disable(true);
-//         var midiBuffer = new abcjs.synth.CreateSynth();
-//         midiBuffer.init({
-//             visualObj: visualObj[0],
-//             millisecondsPerMeasure: 800,
-//             chordsOff: true,
-//             options: {
-
-//             }
-
-//         }).then(function () {
-//             synthControl.setTune(visualObj[0], true).then(function (response) {
-//             document.querySelector(".abcjs-inline-audio").classList.remove("disabled");
-//             })
-//         });
-//     } else {
-//         console.log("audio is not supported on this browser");
-//     };
-// }
 </script>
 
 <style lang="scss">
