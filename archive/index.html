@@ -1,0 +1,236 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Tunebook - Baton Rouge Fiddle Jam</title>
+    <meta name="description" content="Baton Rouge Fiddle Jam">
+    <meta name="author" content="Stephen Hebert">
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/abcjs-midi.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/abcjs-audio.css">
+    <link rel="stylesheet" type="text/css" href="css/taggle.css">
+    <style>
+        .highlight {
+			fill: #0a9ecc;
+		}
+		.audio-error {
+			color: red;
+			border: 2px solid red;
+			padding: 10px;
+		}
+		.label {
+			color: #888888;
+		}
+	</style>
+
+</head>
+
+<body>
+
+    <div class="title d-flex flex-row">
+        <a class="nav-toggle" href="javascript://" onclick="toggleNavMenu()"><i class="fa fa-bars"></i></a>
+        <h1>Baton Rouge Fiddle Jam 🎻🪕</h1>
+    </div>
+
+    <div class="wrapper container-fluid">
+        <div class="row">
+
+            <div class="left-nav">
+                <a class="close" onclick="closeNavMenu()" href="javascript://"><i class="fa fa-times text-light"></i></a>
+                <div class="" style="width: 85%;">
+                    <div class="input textarea clearfix search"></div>
+                    <ul id="tunelist"></ul>
+                    <div class="mt-4 px-1 py-2 contact">
+                        <span class="text-muted">Looking for a tune that isn't here?
+                            <a href="contact.html">Request it!</a></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col main">
+                <div class="body py-2">
+                    <div class="container-fluid" style="min-height: 300px;" id="default">
+                        <div class="row">
+                            <div class="col">
+                                <span>Select a tune from the menu.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid d-none" id="tune"></div>
+                    <div class="container-fluid px-4 py-2 border-top credits">
+                        <span class="text-muted small"><img src="img/sig.png"> Stephen Hebert 2019. Powered by <a href="https://www.abcjs.net/"
+                                target="_blank">abcjs</a>.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer d-flex flex-row">
+        <div id="audio" class="flex-grow-1"></div>
+        <div id="transpose-control" class="small my-auto">Transpose: <input type="number" value="0" oninput="displayTune(tuneBook.current.tuneIndex,tuneBook.current.variationIndex,this.value)"></div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- <script type="text/javascript" src="js/abcjs_basic_5.10.3-min.js"></script> -->
+    <script type="text/javascript" src="js/abcjs_basic_5.10.3.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/taggle.min.js"></script>
+    <script type="text/javascript" src="js/tunes.js"></script>
+    <script type="text/javascript" src="js/tuneBook.js"></script>
+
+    <script>
+        function toggleNavMenu() {
+            document.querySelector('.left-nav').classList.toggle('open');
+        }
+
+        function closeNavMenu() {
+            document.querySelector('.left-nav').classList.remove('open');
+        }
+
+        function updateTuneMenu(tunes) {
+            let tunelist = [];
+            tunes.forEach(tune => {
+                let titles = tune.title;
+                if (typeof (title) == "string") titles = [titles];
+                titles.forEach(title => tunelist.push({ index: tune.index, title: title }));
+            });
+
+            let showHeadings = (tunelist.length > 20) ? true : false;
+            let tunelistHtml = '';
+            let prevHeading = "";
+            tunelist
+                .sort((a, b) => {
+                    if (a.title.toUpperCase() < b.title.toUpperCase())
+                        return -1;
+                    else if (a.title.toUpperCase() > b.title.toUpperCase())
+                        return 1;
+                    else
+                        return 0;
+                })
+                .forEach(tune => {
+                    if (showHeadings) {
+                        let currHeading = tuneBookHelpers.getHeading(tune);
+                        if (currHeading != prevHeading) {
+                            tunelistHtml += `<p class="h6">${currHeading}</p>`;
+                            prevHeading = currHeading;
+                        }
+                    }
+                    tunelistHtml += `<li class="nav-item hanging-indent h5"><a class="nav-link" href="javascript://" data-index="${tune.index}" onclick="displayTune(${tune.index},0,0,true)">${tune.title}</a></li>`;
+                });
+            let tunelistContainer = document.getElementById("tunelist");
+            tunelistContainer.innerHTML = tunelistHtml;
+        }
+
+        function filterTuneMenu() {
+            let filterTags = taggle.getTagValues();
+            let filterText = taggle.getInput().value;
+            // workaround for weird functionality
+            let lastTag = filterTags.slice(-1).pop();
+            if (lastTag) {
+                let indexOfLastTag = filterText.indexOf(lastTag);
+                if ((indexOfLastTag + lastTag.length) == filterText.length) {
+                    filterText = filterText.substr(0, indexOfLastTag);
+                }
+            }
+            console.log(`filtering with ${filterTags} and "${filterText}"`);
+            let filteredTunes = tuneBook.tunes
+                .filter(tune => filterTags
+                    .every(tag => tune.tags != null
+                        && tune.tags.includes(tag))
+                    && (filterText.length == 0 ||
+                        tuneBookHelpers.first(tune.title).toLowerCase().includes(filterText.toLowerCase()))
+                );
+            updateTuneMenu(filteredTunes);
+        }
+
+        function closeNavMenuIfMobile() {
+            if (document.querySelector(".left-nav").classList.contains("open")
+                && document.querySelector(".main").offsetLeft == 0)
+                closeNavMenu();
+        }
+
+        function displayTune(tuneIndex, variationIndex, visualTranspose, userAction) {
+            // tuneBook.tunes[tuneIndex].variations[variationIndex || 0].display();
+            // hide menu if mobile
+            closeNavMenuIfMobile();
+
+            let tune = tuneBook.tunes.filter(tune => tune.index == tuneIndex)[0];
+            if (tune) tune.variations[variationIndex || 0].display((visualTranspose || 0), userAction);
+            window.history.pushState("", "",
+                `?t=${tuneIndex}` +
+                ((variationIndex) ? `&v=${variationIndex}` : "") +
+                ((visualTranspose) ? `&vt=${visualTranspose}` : "")
+
+            );
+        }
+
+        function getQueryArgs() {
+            let query = window.location.search.substring(1);
+            let args = [];
+            let pairs = query.split('&');
+            pairs.forEach(pair => {
+                if (pair.length > 0) {
+                    let vars = pair.split("=");
+                    args[decodeURIComponent(vars[0])] = decodeURIComponent(vars[1]);
+                }
+            });
+            return args;
+        }
+
+        let tuneBook = new TuneBook(tunes);
+
+        var tagList = [...new Set(tuneBook.tunes.flatMap(tune => tune.tags).sort().filter(tag => tag.length > 0))];
+
+        updateTuneMenu(tuneBook.tunes);
+
+        // check querystring for current tune
+        let queryArgs = getQueryArgs();
+        let tuneIndex = queryArgs['t'];
+        let variationIndex = queryArgs['v'];
+        let visualTranspose = queryArgs['vt'];
+
+        if (tuneIndex) displayTune(tuneIndex, variationIndex, visualTranspose);
+
+        var taggle;
+        $(document).ready(function () {
+            taggle = new Taggle($('.search')[0], {
+                placeholder: "Search...",
+                allowedTags: tagList,
+                saveOnBlur: true,
+                duplicateTagClass: 'bounce',
+                onTagAdd: filterTuneMenu,
+                onTagRemove: filterTuneMenu
+            });
+            var container = taggle.getContainer();
+            var input = taggle.getInput();
+            $(input).autocomplete({
+                source: tagList, // See jQuery UI documentaton for options
+                appendTo: container,
+                position: { at: "left bottom", of: container },
+                select: function (event, data) {
+                    event.preventDefault();
+                    // Add the tag if user clicks
+                    if (event.which === 1) {
+                        taggle.add(data.item.value);
+                    }
+                }
+            });
+            $(input).on('input', filterTuneMenu);
+            $(input).on('change', filterTuneMenu);
+        });
+
+    </script>
+
+</body>
+
+</html>
