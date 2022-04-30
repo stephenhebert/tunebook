@@ -37,6 +37,9 @@
 - [ ] fix tunes with the same name, show variations (eg, [1] [2] [3])
 - [ ] tablature is getting cut off ... increase svg viewbox and padding-bottom of .abcjs-container
 - [ ] seek resets warp... fix seek with warp ... observe progress bar functionality 
+- [ ] publish to github pages - https://stackoverflow.com/questions/15718649/how-to-publish-a-website-made-by-node-js-to-github-pages
+  - [ ] manual w/ gh-pages package
+  - [ ] automated with github action
 
 - [ ] search / filter bar 
 
