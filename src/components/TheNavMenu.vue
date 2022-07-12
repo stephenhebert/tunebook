@@ -13,14 +13,14 @@
             :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="go(tune.index)"
           >
-            {{ getValue(tune.title) }}
+            {{ tune.title }}
           </button>
           <button
             class="tune-title text-lg font-serif block lg:display-none text-left"
             :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="goAndHide(tune.index)"
           >
-            {{ getValue(tune.title) }}
+            {{ tune.title }}
           </button>
         </template>
       </div>
@@ -53,8 +53,15 @@ export default {
       let tunes = [...this.tunes]
       tunes = tunes
         .map((tune, i) => ({ ...tune, index: i }))
-        .sort((a, b) => a.title.join('').localeCompare(b.title.join('')))
-        .reduce((obj, curr, i) => {
+        .reduce((arr, curr) => {
+          curr.title.forEach((title) => {
+            if (title.startsWith('The ')) title = `${title.slice(4)}, The`
+            arr.push({ ...curr, title })
+          })
+          return arr
+        }, [])
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .reduce((obj, curr) => {
           const firstLetter = this.getFirstLetter(curr.title)
           if (!obj[firstLetter]) obj[firstLetter] = []
           obj[firstLetter].push(curr)
@@ -67,11 +74,8 @@ export default {
     },
   },
   methods: {
-    getValue(field) {
-      return field.join('')
-    },
     getFirstLetter(field) {
-      return this.getValue(field).charAt(0).toUpperCase()
+      return field.charAt(0).toUpperCase()
     },
   },
 }

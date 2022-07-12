@@ -70,7 +70,7 @@ export default {
         'source',
         'transcription',
       ]
-      const regexesToReplace = this.TuneData_getMetaFieldRegexStringsByKeys(...keysToHide)
+      const regexesToReplace = this.TunesData_getMetaFieldRegexStringsByKeys(...keysToHide)
       regexesToReplace.forEach((regex) => {
         abc = abc.replace(new RegExp(`${regex}\n`, 'g'), '')
       })
