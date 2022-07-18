@@ -90,7 +90,8 @@ export default {
 .notation {
 
   :deep(.highlight) {
-    fill: #0a9ecc;
+    // fill: #0a9ecc;
+    fill: #60a5fa;
   }
 
   :deep(.abcjs-note_selected) {
