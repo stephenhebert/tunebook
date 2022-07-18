@@ -1,5 +1,5 @@
 <template>
-  <div v-if="context?.browserSupportsAudio" class="footer border-t-4 border-gray-300 dark:border-gray-700 shadow bg-hex-121212 color-white" :class="{ 'show': context?.renderedTune }">
+  <div v-if="context?.browserSupportsAudio" class="footer border-t-4 border-gray-300 dark:border-gray-700 shadow bg-hex-121212 color-white z-2000" :class="{ 'show': context?.renderedTune }">
     <SynthController />
   </div>
 </template>

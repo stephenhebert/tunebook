@@ -1,6 +1,6 @@
 <template>
   <div
-    class="the-nav-menu mb-0 border-r-4 border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-hex-121212 z-1000 bottom-0"
+    class="the-nav-menu mb-0 border-r-4 border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-hex-121212 z-1000 bottom-0 overflow-scroll"
     :class="{'open': open, 'closed': !open, '!bottom-42px': !!context.renderedTune }"
   >
     <!--  -->
