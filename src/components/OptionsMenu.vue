@@ -28,11 +28,11 @@
         <div class="mt-2 text-xs">
           Lead Instrument
           <div class="p-2 rounded border-1">
-            <button class="flex items-center" @click="setInstrument('FIDDLE')">
+            <!-- <button class="flex items-center" @click="setInstrument('FIDDLE')">
               <div v-if="instrument === 'FIDDLE'" class="i-tabler-circle-dot" />
               <div v-else class="i-tabler-circle" />
               <label class="mx-1 text-xs">Fiddle</label>
-            </button>
+            </button> -->
             <button class="flex items-center" @click="setInstrument('PIANO')">
               <div v-if="instrument === 'PIANO'" class="i-tabler-circle-dot" />
               <div v-else class="i-tabler-circle" />

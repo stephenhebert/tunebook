@@ -22,7 +22,7 @@ const INSTRUMENTS = {
   ACCORDION: 21,
   FLUTE: 73,
   BANJO: 105,
-  FIDDLE: 110,
+//  FIDDLE: 110,
 }
 
 function CursorControl() {

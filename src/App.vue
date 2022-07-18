@@ -39,7 +39,7 @@ export default {
           tempoPercent: 100,
           enableChords: true,
           showTabs: false,
-          instrument: 'FIDDLE',
+          instrument: 'PIANO',
         },
       },
       isNavMenuOpen: false,
