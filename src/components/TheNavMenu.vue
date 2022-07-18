@@ -6,17 +6,17 @@
     <!--  -->
     <div v-for="letter in tunesByLetter" :key="letter[0]">
       <div class="fw-semibold text-sm mb-4">
-        {{ letter[0] }}
+        <span class="text-gray-500">{{ letter[0] }}</span>
         <template v-for="tune in letter[1]">
           <button
-            class="tune-title text-lg font-serif block lt-lg:display-none text-left"
+            class="tune-title text-lg font-serif block lt-lg:display-none text-left hover:text-orange"
             :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="go(tune.index)"
           >
             {{ tune.title }}
           </button>
           <button
-            class="tune-title text-lg font-serif block lg:display-none text-left"
+            class="tune-title text-lg font-serif block lg:display-none text-left hover:text-orange"
             :class="{'selected': tune.fileName === selectedTune?.fileName }"
             @click="goAndHide(tune.index)"
           >
@@ -108,7 +108,8 @@ export default {
     padding-left: 1rem;
 
     &.selected {
-      color: #0a9ecc;
+      // color: #0a9ecc;
+      color: #60a5fa;
     }
   }
 

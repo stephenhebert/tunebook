@@ -1,5 +1,5 @@
 <template>
-  <div class="title-bar border-b-4 border-gray-300 dark:border-gray-700 p-2 flex flex-row shadow items-center">
+  <div class="title-bar border-b-4 border-gray-300 bg-white dark:border-gray-700 dark:bg-hex-121212 p-2 flex flex-row shadow items-center fixed w-full z-10">
     <button
       class="text-xl mr-2"
       :class="{'i-mdi-menu': !isMenuOpen, 'i-mdi-close': isMenuOpen}"
